@@ -1,5 +1,6 @@
 var gulp = require('gulp');
-
+var concat = require('gulp-concat');
+var sass = require('gulp-sass'); //需要先載入gulp-concat
 var source = require('vinyl-source-stream');
 /*
 Browserify lets you require('modules') in the browser by bundling up all of your dependencies.
@@ -88,4 +89,20 @@ gulp.task('serve', function(done) {
     }));
 });
 
-gulp.task('default', ['build', 'serve']);
+gulp.task('sass', function () {
+  gulp.src('./sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('style.css'))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('default', ['build', 'serve', 'sass']);
+/*
+Gulp has the ability to watch files for changes and then run a task or tasks when changes are detected. 
+This feature is amazingly useful (and, for me, probably Gulp’s single most useful one). 
+You can save your LESS file, and Gulp will turn it into CSS and update the browser 
+without your having to do anything.
+*/
+gulp.task('watch', function () {  
+  gulp.watch('./sass/**/*.scss', ['sass']);
+});
