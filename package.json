@@ -1,0 +1,23 @@
+{
+  "name": "BkCalendar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Beck Lin",
+  "dependencies": {
+    "browserify": "^9.0.3",
+    "firebase": "^2.2.6",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-server-livereload": "^1.3.0",
+    "node-notifier": "^4.2.1",
+    "react": "^0.13.3",
+    "reactfire": "^0.4.0",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^2.4.0"
+  },
+  "devDependencies": {}
+}
