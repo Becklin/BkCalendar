@@ -18,12 +18,15 @@ var BkMonth = React.createClass({
   render: function() {
   var grids = [];
     for (var i = 0; i < 42; i++) {
-      if (i >= this.props.bkcurDate.getDay() && i < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
-        grids.push(<div className="grid this-month" key={i} ><BkDay bgcurDate={this.props.bkcurDate}  key={i} /></div>);
+      //該月份顯示
+      if(i >= this.props.bkcurDate.getDay() && i < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
+        var t  = this.props.bkcurDate.getDay()-1;
+        grids.push(<div className="grid this-month" key={i} ><BkDay bgcurDate={i - t}  /></div>);
+      //月份以外顯示
       } else {
-        grids.push(<div className="grid" key={i} ><BkDay bgcurDate={this.props.bkcurDate}  key={i} /></div>);
+        grids.push(<div className="grid" key={i} ></div>);
       }
-  }
+    }
   return  <div>
               <div className="grid-title">SUN</div>
               <div className="grid-title">MON</div>
