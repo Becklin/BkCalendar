@@ -1,3 +1,21 @@
 body {
 	background: #f7fdef;
 }
+.grid-title {
+ text-align: center;
+ line-height: 70px;
+ font-size: 36px;
+}
+.grid-title, .grid {
+	float: left;
+	border:1px solid gray;
+	background: #EFEFEF;
+	width: 13%;
+	height:70px;
+}
+.day {
+	display: inline;
+}
+.this-month {
+	background: #DADADA;
+}
