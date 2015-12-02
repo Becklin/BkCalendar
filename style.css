@@ -13,6 +13,9 @@ body {
   width: 13%;
   height: 70px; }
 
+.grid {
+  cursor: pointer; }
+
 .day {
   display: inline; }
 

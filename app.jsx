@@ -1,19 +1,22 @@
 var React = require('react');
-
+var Firebase = require('Firebase');
+var Reactfire = require('reactfire');
+var rootUrl = 'https://shining-fire-6582.firebaseio.com/';
 
 
 var BkDay = React.createClass({
   render: function() {
     return <div className="day">
-      {this.props.bgcurDate}
+      {this.props.curMonth}月{this.props.curDate}日
     </div>
   }
 });
 
 
 var BkMonth = React.createClass({
+
   componentDidMount: function(){
-    
+
   },
   render: function() {
   var grids = [];
@@ -21,7 +24,7 @@ var BkMonth = React.createClass({
       //該月份顯示
       if(i >= this.props.bkcurDate.getDay() && i < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
         var t  = this.props.bkcurDate.getDay()-1;
-        grids.push(<div className="grid this-month" key={i} ><BkDay bgcurDate={i - t}  /></div>);
+        grids.push(<div className="grid this-month" key={i} ><BkDay curDate={i - t} curMonth={this.props.bkcurDate.getMonth() + 1} /></div>);
       //月份以外顯示
       } else {
         grids.push(<div className="grid" key={i} ></div>);
@@ -56,8 +59,16 @@ var Header = React.createClass({
 });
 
 var App = React.createClass({
+  mixins: [ Reactfire ],
+  getInitialState: function(){
+    return {
+      records: {}
+    }
+  },
   componentWillMount:function(){
-
+    this.fb = new Firebase(rootUrl + 'records/');
+    this.bindAsObject(this.fb, 'records');
+    //this.fb.on('value', this.handleDataLoaded);
   },
   getInitialState: function(){
     return {
@@ -66,6 +77,7 @@ var App = React.createClass({
     }
   },
   render: function() {
+
     return <div className="app">
              <Header curDate={this.state.curDate} />
              <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
