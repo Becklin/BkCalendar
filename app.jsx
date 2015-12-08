@@ -15,13 +15,14 @@ var Header = React.createClass({
     <span>{this.props.curDate.getFullYear()}</span>
     <span>{this.props.curDate.getMonth() + 1 }</span>
     <span>{this.props.curDate.getDate()}</span>
-     <button type="button">DELETE</button> 
-     <button type="button" onClick={this.handleSubmit}>ADD</button>
-     <button type="button">DETAIL</button>
     </nav>
   },
   handleSubmit: function(){
-
+    this.props.recordsStore.push({ // push: is a firebase method we create new object to our remote database
+      title: "我是標題", //this.state.title,
+      content: "我是內文", //this.state.content,
+      done: false //set flase means we havnt complete the todo item.
+    });
   },
   handleDelete: function(){
 
@@ -30,14 +31,27 @@ var Header = React.createClass({
 
 
 var BkDay = React.createClass({
+  getInitialState: function(){
+    return {
+
+    }
+  },
   render: function() {
-    return <div className="day" >
+    return <div onClick={this.handleRecord} className="day" >
       {this.props.curMonth}月{this.props.curDate}日
+    </div>
+
+  },
+  handleRecord: function(){
+    return <div className="btn-group">
+     <button type="button">DELETE</button> 
+     <button type="button" onClick={this.handleSubmit}>ADD</button>
+     <button type="button">DETAIL</button>
     </div>
   }
 });
 
-var GridGroup = React.createClass({
+var GridGroup = React.createClass({ //操作格子的變色
   render: function() {
     return <div>{React.Children.map(this.props.children, this.renderItem)}</div>
   },
@@ -60,41 +74,59 @@ var BkMonth = React.createClass({
   getInitialState: function(){
     return {
       selected: null,
-      records: this.props.records
+      records2: this.props.records
     }
   },
-  // handleDataLoaded: function(){
-  //  console.log("handleDataLoaded");
-  // },
-  componentDidUpdate: function() {
-    console.log("haha");
-    console.log(this.state.records);
-  },
   render: function() {
-   console.log("render");
-  var grids = [];
+   function formatGenerator(time){
+        if (time.toString().length == 1) {
+         time = "0" + time;
+        };
+        return time;
+   }
+   var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
      if(i < this.props.bkcurDate.getDay()){
             var prevMonthFirstDate = new Date(this.props.bkcurDate.getTime());
             prevMonthFirstDate = new Date(prevMonthFirstDate.setMonth( this.props.bkcurDate.getMonth() - 1)), 
             prevMonthDaysinMonth = new Date(prevMonthFirstDate.getFullYear(), prevMonthFirstDate.getMonth()+1, 0).getDate();
-            var t  = this.props.bkcurDate.getDay()-1;
-       grids.push(<div className="grid" key={i} ><BkDay curDate={prevMonthDaysinMonth + (i - t)} curMonth={this.props.bkcurDate.getMonth()} /></div>);
+            var dayBefore  = this.props.bkcurDate.getDay()-1;
+            var prevMonth = prevMonthFirstDate.getMonth()+1;
+
+            var prevMonthFormat = (prevMonth==0?12:prevMonth);
+            var prevDateFormat = prevMonthDaysinMonth + (i - dayBefore);
+
+           formatGenerator(prevMonthFormat);
+           formatGenerator(prevDateFormat);
+
+       grids.push(<div className="grid" value={prevMonthFirstDate.getFullYear().toString() + prevMonthFormat + prevDateFormat} ref={prevMonthFirstDate.getFullYear().toString() + prevMonthFormat + prevDateFormat} key={i} ><BkDay curDate={prevDateFormat} curMonth={prevMonthFormat} /></div>);
      } 
      //該月份顯示
      else if( i >= this.props.bkcurDate.getDay() && i < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
-       var t  = this.props.bkcurDate.getDay()-1;
-       grids.push(<div className="grid this-month" key={i} ><BkDay  onHandler={this.handleBtn} curDate={i - t} curMonth={this.props.bkcurDate.getMonth() + 1} /></div>);
+       var day  = this.props.bkcurDate.getDay()-1;
+       var MonthFormat = this.props.bkcurDate.getMonth() + 1
+       var dateFormat = i - day;
+
+       formatGenerator(MonthFormat);
+       formatGenerator(dateFormat);
+console.log(dateFormat);/////////////日期並沒有加0////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       grids.push(<div className="grid this-month" value={this.props.bkcurDate.getFullYear().toString() + MonthFormat + dateFormat} ref={this.props.bkcurDate.getFullYear().toString() + MonthFormat + dateFormat} key={i} ><BkDay curDate={dateFormat} curMonth={MonthFormat} /></div>);
      //月份以後顯示
      } else if(i >= (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)){
         var nextMonthFirstDate = new Date(this.props.bkcurDate.getTime());
             nextMonthFirstDate = new Date(nextMonthFirstDate.setMonth( this.props.bkcurDate.getMonth()+2));
-        var t  = this.props.bkcurDate.getDay()-1;
-       grids.push(<div className="grid" key={i} ><BkDay curDate={i - this.props.bkmonthDaysinMonth - t} curMonth={nextMonthFirstDate.getMonth()} /></div>);
+        var dayAfter  = this.props.bkcurDate.getDay()-1;
+        var nextMonth = nextMonthFirstDate.getMonth();
+       grids.push(<div className="grid" value={nextMonthFirstDate.getFullYear().toString() + (nextMonth==0?12:nextMonth).toString() + (i - this.props.bkmonthDaysinMonth - dayAfter).toString()} ref={nextMonthFirstDate.getFullYear().toString() + (nextMonth==0?12:nextMonth).toString() + (i - this.props.bkmonthDaysinMonth - dayAfter).toString()} key={i} ><BkDay curDate={i - this.props.bkmonthDaysinMonth - dayAfter} curMonth={(nextMonth==0?12:nextMonth)} /></div>);
      }
     }
    return  <div>
+   <nav>
+   <button onClick={this.handleAdd}>ADD</button>
+   <button>DETAIL</button>
+   <button>DELETE</button>
+   </nav>
               <div className="grid-title">SUN</div>
               <div className="grid-title">MON</div>
               <div className="grid-title">TUE</div>
@@ -107,37 +139,43 @@ var BkMonth = React.createClass({
    </GridGroup>
   </div>
   },
-  handleBtn: function(){
-
-  },
   handleChange: function(selected){
     this.setState({
       selected: selected,
     });
+    console.log(selected);
+  },
+  handleAdd: function(){
+    var content = this.state.selected + 1;
+    alert(content);
   }
 });
 
-
-
 var App = React.createClass({
-
+  mixins: [ Reactfire ],
+  componentWillMount:function(){
+    this.fb = new Firebase(rootUrl + 'records/');
+    this.bindAsObject(this.fb, 'records');
+    //we bound our data as an object to => "items" this.state.items
+   // this.fb.on('value', this.handleDataLoaded);
+  },
   getInitialState: function(){
     console.log("getInitialState");
     return {
         records: {},
         curDate: this.props.curDate,
-        monthDaysinMonth: this.props.monthDaysinMonth,
-        dataRecords :[]
+        title: "",
+        monthDaysinMonth: this.props.monthDaysinMonth
     }
   },
   handleDataLoaded:function(){
-    //console.log("handleDataLoaded" + this.state);
+
   },
   render: function() {
-    console.log("render");
     return <div className="app">
-             <Header curDate={this.state.curDate} />
-             <BkMonth  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
+              <hr />
+             <BkMonth records={this.firebaseRefs.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
           </div>
@@ -180,8 +218,8 @@ var curDate =  new Date(),   //本日
     monthDaysinMonth = new Date(curDate.getFullYear(), curDate.getMonth()+1, 0).getDate(); //該月有幾天
 
 var options = {
-        curDate: curDate,   //本日
-        monthDaysinMonth:  monthDaysinMonth  //該月有幾天
+      curDate: curDate,   //本日
+      monthDaysinMonth:  monthDaysinMonth  //該月有幾天
 }
 
 var element = React.createElement(App, options);
