@@ -4,6 +4,31 @@ var Reactfire = require('reactfire');
 var rootUrl = 'https://shining-fire-6582.firebaseio.com/';
 var cloneWithProps = require('react-clonewithprops');
 
+var Header = React.createClass({
+  getInitialState: function(){
+    return {
+
+    }
+  },
+  render: function() {
+    return <nav className="nav">
+    <span>{this.props.curDate.getFullYear()}</span>
+    <span>{this.props.curDate.getMonth() + 1 }</span>
+    <span>{this.props.curDate.getDate()}</span>
+     <button type="button">DELETE</button> 
+     <button type="button" onClick={this.handleSubmit}>ADD</button>
+     <button type="button">DETAIL</button>
+    </nav>
+  },
+  handleSubmit: function(){
+
+  },
+  handleDelete: function(){
+
+  }
+});
+
+
 var BkDay = React.createClass({
   render: function() {
     return <div className="day" >
@@ -26,15 +51,27 @@ var GridGroup = React.createClass({
 });
 
 var BkMonth = React.createClass({
+  mixins: [ Reactfire ],
+  componentWillMount:function(){
+    this.fb = new Firebase(rootUrl + 'records/');
+    this.bindAsObject(this.fb, 'records');
+    //this.fb.on('value', this.handleDataLoaded);
+  },
   getInitialState: function(){
     return {
-      selected: null
+      selected: null,
+      records: this.props.records
     }
   },
-  componentDidMount: function(){
-
+  // handleDataLoaded: function(){
+  //  console.log("handleDataLoaded");
+  // },
+  componentDidUpdate: function() {
+    console.log("haha");
+    console.log(this.state.records);
   },
   render: function() {
+   console.log("render");
   var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
@@ -65,7 +102,7 @@ var BkMonth = React.createClass({
               <div className="grid-title">THU</div>
               <div className="grid-title">FRI</div>
               <div className="grid-title">SAT</div>
-   <GridGroup onChange={this.handleChange}  value={this.state.selected}>
+   <GridGroup  records={this.state.records} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
     {grids}
    </GridGroup>
   </div>
@@ -80,39 +117,12 @@ var BkMonth = React.createClass({
   }
 });
 
-var Header = React.createClass({
-  getInitialState: function(){
-    return {
 
-    }
-  },
-  render: function() {
-    return <nav className="nav">
-    <span>{this.props.curDate.getFullYear()}</span>
-    <span>{this.props.curDate.getMonth() + 1 }</span>
-    <span>{this.props.curDate.getDate()}</span>
-     <button type="button">DELETE</button> 
-     <button type="button" onClick={this.handleSubmit}>ADD</button>
-     <button type="button">DETAIL</button>
-    </nav>
-  },
-  handleSubmit: function(){
-
-  },
-  handleDelete: function(){
-
-  }
-});
 
 var App = React.createClass({
-  mixins: [ Reactfire ],
-  componentWillMount:function(){
-    this.fb = new Firebase(rootUrl + 'records/');
-    this.bindAsObject(this.fb, 'records');
-    //we bound our data as an object to => "items" this.state.items
-    //this.fb.on('value', this.handleDataLoaded);
-  },
+
   getInitialState: function(){
+    console.log("getInitialState");
     return {
         records: {},
         curDate: this.props.curDate,
@@ -120,11 +130,14 @@ var App = React.createClass({
         dataRecords :[]
     }
   },
+  handleDataLoaded:function(){
+    //console.log("handleDataLoaded" + this.state);
+  },
   render: function() {
-    console.log("records = " + this.state.records);
+    console.log("render");
     return <div className="app">
              <Header curDate={this.state.curDate} />
-             <BkMonth recordsStore={this.firebaseRefs.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <BkMonth  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
           </div>
@@ -149,7 +162,6 @@ var App = React.createClass({
                 monthDaysinMonth: nextMonthDaysinMonth,
                 dataRecords:dataArray
             });
-            console.log(this.state.dataRecords);
   },
   prevMonth:function(){
         var curDate = this.state.curDate,
