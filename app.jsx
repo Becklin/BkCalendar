@@ -4,12 +4,17 @@ var Reactfire = require('reactfire');
 var rootUrl = 'https://shining-fire-6582.firebaseio.com/';
 var cloneWithProps = require('react-clonewithprops');
 
-var Header = React.createClass({
-  getInitialState: function(){
-    return {
+var BkCalendarMixin = {
+   formatGenerator : function (time){
+        if (time.toString().length == 1) {
+         time = "0" + time;
+        };
+        return time.toString();
+   }
+};
 
-    }
-  },
+
+var Header = React.createClass({
   render: function() {
     return <nav className="nav">
     <span>{this.props.curDate.getFullYear()}</span>
@@ -28,7 +33,18 @@ var Header = React.createClass({
 
   }
 });
+var Bullitin = React.createClass({
+  getInitialState: function(){
+    return {
 
+    }
+  },
+  render: function() {
+    return <div  className="bullitin" >
+      
+    </div>
+  }
+});
 
 var BkDay = React.createClass({
   getInitialState: function(){
@@ -41,31 +57,64 @@ var BkDay = React.createClass({
       {this.props.curMonth}月{this.props.curDate}日
     </div>
 
-  },
-  handleRecord: function(){
-    return <div className="btn-group">
-     <button type="button">DELETE</button> 
-     <button type="button" onClick={this.handleSubmit}>ADD</button>
-     <button type="button">DETAIL</button>
-    </div>
   }
 });
 
 var GridGroup = React.createClass({ //操作格子的變色
+  mixins: [ BkCalendarMixin ],
   render: function() {
     return <div>{React.Children.map(this.props.children, this.renderItem)}</div>
   },
   renderItem: function(div, index){
-    return cloneWithProps(div, { className: this.props.value === index ? 'active' : '',
-      onClick: function(){ 
-        this.props.onChange(index); 
+    return cloneWithProps(div, { 
+      className: this.props.value === index ? 'active' : '',
+
+      onClick: function(){
+      var clickedData = "";
+     if(index < this.props.bkcurDate.getDay()){
+          //上月
+            var prevMonthFirstDate = new Date(this.props.bkcurDate.getTime()); //複製目前的日期
+            prevMonthFirstDate = new Date(prevMonthFirstDate.setMonth( this.props.bkcurDate.getMonth() - 1)),//設定上一月的日期 
+            prevMonthDaysinMonth = new Date(prevMonthFirstDate.getFullYear(), prevMonthFirstDate.getMonth()+1, 0).getDate();// 取得上一月的天數
+            var dayBefore  = this.props.bkcurDate.getDay()-1,
+                prevMonth = prevMonthFirstDate.getMonth()+1;
+            var prevMonthFormat = (prevMonth==0?12:prevMonth),
+                prevDateFormat = prevMonthDaysinMonth + (index - dayBefore);
+
+          prevMonthFormat = this.formatGenerator(prevMonthFormat);
+          prevDateFormat = this.formatGenerator(prevDateFormat);
+          clickedData = this.props.bkcurDate.getFullYear().toString() + prevMonthFormat.toString() + prevDateFormat.toString();
+
+        } else if (index >= this.props.bkcurDate.getDay() && index < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
+         //本月
+          var day  = this.props.bkcurDate.getDay()-1, //取得星期顯示
+              MonthFormat = this.props.bkcurDate.getMonth() + 1, //取得該月顯示
+              dateFormat = index - day;
+          MonthFormat = this.formatGenerator(MonthFormat);
+          dateFormat = this.formatGenerator(dateFormat);
+          clickedData = this.props.bkcurDate.getFullYear().toString() + MonthFormat.toString() + dateFormat.toString();
+
+        } else if (index >= (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)){
+          //下月
+          var nextMonthFirstDate = new Date(this.props.bkcurDate.getTime());
+              nextMonthFirstDate = new Date(nextMonthFirstDate.setMonth( this.props.bkcurDate.getMonth()+2));
+          var dayAfter  = this.props.bkcurDate.getDay()-1,
+              nextMonth = nextMonthFirstDate.getMonth();
+          var nextMonthFormat = nextMonth==0?12:nextMonth,
+              nextDateFormat = index - this.props.bkmonthDaysinMonth - dayAfter;
+
+          nextMonthFormat = this.formatGenerator(nextMonthFormat);
+          nextDateFormat = this.formatGenerator(nextDateFormat);
+          clickedData = this.props.bkcurDate.getFullYear().toString() + nextMonthFormat.toString() + nextDateFormat.toString();
+        }
+        this.props.onChange(index, clickedData); 
       }.bind(this)
     });
   }
 });
 
 var BkMonth = React.createClass({
-  mixins: [ Reactfire ],
+  mixins: [ Reactfire, BkCalendarMixin ],
   componentWillMount:function(){
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
@@ -77,54 +126,75 @@ var BkMonth = React.createClass({
       records2: this.props.records
     }
   },
+  componentWillRecieveProps: function(){
+
+  },
   render: function() {
-   function formatGenerator(time){
-        if (time.toString().length == 1) {
-         time = "0" + time;
-        };
-        return time;
-   }
    var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
      if(i < this.props.bkcurDate.getDay()){
-            var prevMonthFirstDate = new Date(this.props.bkcurDate.getTime());
-            prevMonthFirstDate = new Date(prevMonthFirstDate.setMonth( this.props.bkcurDate.getMonth() - 1)), 
-            prevMonthDaysinMonth = new Date(prevMonthFirstDate.getFullYear(), prevMonthFirstDate.getMonth()+1, 0).getDate();
-            var dayBefore  = this.props.bkcurDate.getDay()-1;
-            var prevMonth = prevMonthFirstDate.getMonth()+1;
+            var prevMonthFirstDate = new Date(this.props.bkcurDate.getTime()); //複製目前的日期
+            prevMonthFirstDate = new Date(prevMonthFirstDate.setMonth( this.props.bkcurDate.getMonth() - 1)),//設定上一月的日期 
+            prevMonthDaysinMonth = new Date(prevMonthFirstDate.getFullYear(), prevMonthFirstDate.getMonth()+1, 0).getDate();// 取得上一月的天數
+            var dayBefore  = this.props.bkcurDate.getDay()-1,
+                prevMonth = prevMonthFirstDate.getMonth()+1;
+            var prevMonthFormat = (prevMonth==0?12:prevMonth),
+                prevDateFormat = prevMonthDaysinMonth + (i - dayBefore);
 
-            var prevMonthFormat = (prevMonth==0?12:prevMonth);
-            var prevDateFormat = prevMonthDaysinMonth + (i - dayBefore);
+          prevMonthFormat = this.formatGenerator(prevMonthFormat);
+          prevDateFormat = this.formatGenerator(prevDateFormat);
 
-           formatGenerator(prevMonthFormat);
-           formatGenerator(prevDateFormat);
-
-       grids.push(<div className="grid" value={prevMonthFirstDate.getFullYear().toString() + prevMonthFormat + prevDateFormat} ref={prevMonthFirstDate.getFullYear().toString() + prevMonthFormat + prevDateFormat} key={i} ><BkDay curDate={prevDateFormat} curMonth={prevMonthFormat} /></div>);
+       grids.push(
+          <div 
+          className="grid" 
+          key={i} >
+             <BkDay curDate={prevDateFormat} curMonth={prevMonthFormat} />
+          </div>
+        );
      } 
      //該月份顯示
      else if( i >= this.props.bkcurDate.getDay() && i < (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)) {
-       var day  = this.props.bkcurDate.getDay()-1;
-       var MonthFormat = this.props.bkcurDate.getMonth() + 1
-       var dateFormat = i - day;
+       var day  = this.props.bkcurDate.getDay()-1, //取得星期顯示
+           MonthFormat = this.props.bkcurDate.getMonth() + 1, //取得該月顯示
+           dateFormat = i - day;
 
-       formatGenerator(MonthFormat);
-       formatGenerator(dateFormat);
-console.log(dateFormat);/////////////日期並沒有加0////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-       grids.push(<div className="grid this-month" value={this.props.bkcurDate.getFullYear().toString() + MonthFormat + dateFormat} ref={this.props.bkcurDate.getFullYear().toString() + MonthFormat + dateFormat} key={i} ><BkDay curDate={dateFormat} curMonth={MonthFormat} /></div>);
+           MonthFormat = this.formatGenerator(MonthFormat);
+           dateFormat = this.formatGenerator(dateFormat);
+
+       grids.push(
+          <div 
+          className="grid this-month" 
+          key={i} >
+            <BkDay curDate={dateFormat} curMonth={MonthFormat} />
+          </div>
+        );
      //月份以後顯示
      } else if(i >= (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)){
         var nextMonthFirstDate = new Date(this.props.bkcurDate.getTime());
             nextMonthFirstDate = new Date(nextMonthFirstDate.setMonth( this.props.bkcurDate.getMonth()+2));
-        var dayAfter  = this.props.bkcurDate.getDay()-1;
-        var nextMonth = nextMonthFirstDate.getMonth();
-       grids.push(<div className="grid" value={nextMonthFirstDate.getFullYear().toString() + (nextMonth==0?12:nextMonth).toString() + (i - this.props.bkmonthDaysinMonth - dayAfter).toString()} ref={nextMonthFirstDate.getFullYear().toString() + (nextMonth==0?12:nextMonth).toString() + (i - this.props.bkmonthDaysinMonth - dayAfter).toString()} key={i} ><BkDay curDate={i - this.props.bkmonthDaysinMonth - dayAfter} curMonth={(nextMonth==0?12:nextMonth)} /></div>);
+        var dayAfter  = this.props.bkcurDate.getDay()-1,
+            nextMonth = nextMonthFirstDate.getMonth();
+        var nextMonthFormat = nextMonth==0?12:nextMonth,
+            nextDateFormat = i - this.props.bkmonthDaysinMonth - dayAfter;
+
+        nextMonthFormat = this.formatGenerator(nextMonthFormat);
+        nextDateFormat = this.formatGenerator(nextDateFormat);
+
+       grids.push(
+          <div 
+          className="grid" 
+          key={i} >
+             <BkDay curDate={nextDateFormat} curMonth={nextMonthFormat} />
+          </div>
+        );
      }
-    }
+    };
+    console.log(MonthFormat.toString() + " - " + dateFormat.toString());
    return  <div>
    <nav>
    <button onClick={this.handleAdd}>ADD</button>
-   <button>DETAIL</button>
+   <button ref="keke" value="bubu">DETAIL</button>
    <button>DELETE</button>
    </nav>
               <div className="grid-title">SUN</div>
@@ -134,20 +204,22 @@ console.log(dateFormat);/////////////日期並沒有加0////////////////////////
               <div className="grid-title">THU</div>
               <div className="grid-title">FRI</div>
               <div className="grid-title">SAT</div>
-   <GridGroup  records={this.state.records} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
+
+   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth}  records={this.state.records} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
     {grids}
    </GridGroup>
+   <Bullitin/>
   </div>
   },
-  handleChange: function(selected){
+  handleChange: function(selected, clickedData){
     this.setState({
       selected: selected,
+      clickedData: clickedData
     });
-    console.log(selected);
   },
-  handleAdd: function(){
-    var content = this.state.selected + 1;
-    alert(content);
+  handleAdd: function(selected){
+    var content = this.state.clickedData;
+    //alert(content);
   }
 });
 
@@ -160,16 +232,12 @@ var App = React.createClass({
    // this.fb.on('value', this.handleDataLoaded);
   },
   getInitialState: function(){
-    console.log("getInitialState");
     return {
-        records: {},
+        records: {}, 
         curDate: this.props.curDate,
         title: "",
         monthDaysinMonth: this.props.monthDaysinMonth
     }
-  },
-  handleDataLoaded:function(){
-
   },
   render: function() {
     return <div className="app">
@@ -186,19 +254,9 @@ var App = React.createClass({
             nextMonthFirstDate = new Date(nextDate.setMonth( curDate.getMonth() + 1)), 
             nextMonthDaysinMonth = new Date(nextDate.getFullYear(), nextDate.getMonth()+1, 0).getDate();
 
-            var dataArray = [];
-
-            for (var i = 0; i <= 42; i++) {
-              dataArray.push({
-                "year":nextMonthFirstDate.getFullYear(),
-                "month":nextMonthFirstDate.getMonth(),
-                "date": i
-              });
-            }
             this.setState({
                 curDate: nextMonthFirstDate,
-                monthDaysinMonth: nextMonthDaysinMonth,
-                dataRecords:dataArray
+                monthDaysinMonth: nextMonthDaysinMonth
             });
   },
   prevMonth:function(){

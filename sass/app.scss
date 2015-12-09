@@ -1,6 +1,9 @@
 body {
 	background: #f7fdef;
 }
+.app {
+	position: relative;
+}
 .grid-title {
  text-align: center;
  line-height: 70px;
@@ -15,7 +18,6 @@ body {
 }
 .grid {
 	cursor: pointer;
-
 }
 .active {
 	  background: #fffcc3 !important;
@@ -26,4 +28,11 @@ body {
 }
 .this-month {
 	background: #DADADA;
+}
+.bullitin {
+    position: absolute;
+	width: 90%;
+	height: 90%;
+	border: 2px solid gray;
+	background: #fff;
 }
