@@ -32,6 +32,12 @@ body {
 .bullitin {
   position: absolute;
   width: 90%;
-  height: 90%;
+  height: 500px;
   border: 2px solid gray;
   background: #fff; }
+
+.show {
+  display: show; }
+
+.hide {
+  display: none; }
