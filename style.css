@@ -31,10 +31,16 @@ body {
 
 .bullitin {
   position: absolute;
-  width: 90%;
-  height: 500px;
+  width: 100%;
+  height: 100%;
   border: 2px solid gray;
   background: #fff; }
+  .bullitin .record-title {
+    font-size: 48px; }
+  .bullitin .record-content {
+    width: 90%;
+    height: 300px;
+    font-size: 24px; }
 
 .show {
   display: show; }

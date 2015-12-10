@@ -21,20 +21,59 @@ var Header = React.createClass({
     <span>{this.props.curDate.getMonth() + 1 }</span>
     <span>{this.props.curDate.getDate()}</span>
     </nav>
-  },
-  handleSubmit: function(){
-    this.props.recordsStore.push({ // push: is a firebase method we create new object to our remote database
-      title: "我是標題", //this.state.title,
-      content: "我是內文", //this.state.content,
-      done: false //set flase means we havnt complete the todo item.
-    });
   }
 });
 var Bullitin = React.createClass({
+  mixins: [ BkCalendarMixin ],
+  getInitialState: function(){
+    return {
+      bullitinStatus: this.props.bullitinProp
+    }
+  },
+  componentWillReceiveProps: function(nextProps){ //第一次render不會跑
+      this.setState({
+        bullitinStatus: nextProps.bullitinProp
+      })
+  },
   render: function() {
-    return <div className={"bullitin " + (this.props.bullitin == true?"show":"hide")}>
-  vfgsrbrgnbgtr
+  return <div className={"bullitin " + (this.state.bullitinStatus == true?"show":"hide")}>
+  <button onClick={this.props.handleClose}>CLOSE</button>
+  <button onClick={this.handleSubmit}>SUBMIT</button>
+  <form>
+  <h2>{this.props.clickedData}</h2>
+    <fieldset>
+      <h2>TITLE</h2>
+    <input className="record-title" type="text" value={this.state.title}  onChange={this.handleTitle} />
+    </fieldset>
+    <fieldset>
+      <h2>DESCRIPTION</h2>
+      <textarea className="record-content" name="description" value={this.state.content}  onChange={this.handleContent} >
+      </textarea>
+    </fieldset>
+  </form>
     </div>
+  },
+  handleTitle: function(event){
+    this.setState({
+      title: event.target.value.substr(0, 15)
+    })
+  },
+  handleContent: function(event){
+    this.setState({
+      content: event.target.value.substr(0, 240)
+    })
+  },
+  handleSubmit: function(){
+    this.props.recordsStore.child(this.props.clickedData).set({ // push: is a firebase method we create new object to our remote database
+      title: this.state.title, //this.state.title,
+      content: this.state.content, //this.state.content,
+      done: false //set flase means we havnt complete the todo item.
+    },function(){
+      alert("SUCCESS!");
+      this.setState({
+        bullitinStatus: false
+      })
+    }.bind(this));
   }
 });
 
@@ -43,7 +82,6 @@ var BkDay = React.createClass({
     return <div onClick={this.handleRecord} className="day" >
       {this.props.curMonth}月{this.props.curDate}日
     </div>
-
   }
 });
 
@@ -110,12 +148,10 @@ var BkMonth = React.createClass({
   getInitialState: function(){
     return {
       selected: null,
-      records2: this.props.records,
-      bullitin: false
+      clickedData: null,
+      records: this.props.records,
+      bullitinStatus: false
     }
-  },
-  componentWillRecieveProps: function(){
-
   },
   render: function() {
    var grids = [];
@@ -178,7 +214,6 @@ var BkMonth = React.createClass({
         );
      }
     };
-    console.log(MonthFormat.toString() + " - " + dateFormat.toString());
    return  <div>
    <nav>
    <button onClick={this.handleAdd}>ADD</button>
@@ -193,10 +228,10 @@ var BkMonth = React.createClass({
               <div className="grid-title">FRI</div>
               <div className="grid-title">SAT</div>
 
-   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth}  records={this.state.records} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
+   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
     {grids}
    </GridGroup>
-   <Bullitin bullitin={this.state.bullitin} />
+   <Bullitin clickedData={this.state.clickedData} handleClose={this.handleClose} handleSubmit={this.handleSubmit} bkcurDate={this.props.bkcurDate} recordsStore={this.firebaseRefs.records} bullitinProp={this.state.bullitinStatus} />
   </div>
   },
   handleChange: function(selected, clickedData){
@@ -208,14 +243,14 @@ var BkMonth = React.createClass({
   handleAdd: function(selected){
     var content = this.state.clickedData;
     this.setState({
-      bullitin: true
+      bullitinStatus: true
     });
-    console.log(content);
+  },
+  handleClose: function(){
+    this.setState({
+      bullitinStatus: false
+    });
   }
-  // showBullitin: function(){
-  //   if (this.state.bullitin) {};
-  //   return <Bullitin/>
-  // }
 });
 
 var App = React.createClass({
@@ -224,7 +259,11 @@ var App = React.createClass({
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
     //we bound our data as an object to => "items" this.state.items
-   // this.fb.on('value', this.handleDataLoaded);
+    this.fb.on('value', function(snapshot) {
+      console.log(snapshot.val());
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
   },
   getInitialState: function(){
     return {
