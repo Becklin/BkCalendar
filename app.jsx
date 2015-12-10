@@ -256,14 +256,54 @@ var BkMonth = React.createClass({
 var App = React.createClass({
   mixins: [ Reactfire ],
   componentWillMount:function(){
+    // this.fb = new Firebase(rootUrl + 'records/');
+    // this.bindAsObject(this.fb, 'records');
+    // //we bound our data as an object to => "items" this.state.items
+    // this.fb.on('value', function(snapshot) {
+    //   console.log(snapshot.val());
+    // }, function (errorObject) {
+    //   console.log("The read failed: " + errorObject.code);
+    // });
+
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
     //we bound our data as an object to => "items" this.state.items
-    this.fb.on('value', function(snapshot) {
-      console.log(snapshot.val());
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
+    // this.fb.on('child_added', function(snapshot, prevChildKey) {
+    //   var newRecord = snapshot.val();
+    //   console.log("Title: " + newRecord.title);
+    //   console.log("Content: " + newRecord.content);
+    //   console.log("Previous Post ID: " + prevChildKey);
+    // });
+
+var ref = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts");
+
+var count = 0;
+
+this.fb.on("child_added", function(snap) {
+  count++;
+  console.log("added", snap.key());
+  console.log(count);
+  
+});
+
+// length will always equal count, since snap.val() will include every child_added event
+// triggered before this point
+this.fb.once("value", function(snap) {
+  console.log("initial data loaded!", Object.keys(snap.val()).length === count);
+});
+
+    // Get a reference to our posts
+    // var ref = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts");
+
+    // // Retrieve new posts as they are added to our database
+    // ref.on("child_added", function(snapshot, prevChildKey) {
+    //   var newPost = snapshot.val();
+    //   console.log("Author: " + newPost.author);
+    //   console.log("Title: " + newPost.title);
+    //   console.log("Previous Post ID: " + prevChildKey);
+    // });
+
+
   },
   getInitialState: function(){
     return {
