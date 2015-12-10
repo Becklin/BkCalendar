@@ -28,17 +28,9 @@ var Header = React.createClass({
       content: "我是內文", //this.state.content,
       done: false //set flase means we havnt complete the todo item.
     });
-  },
-  handleDelete: function(){
-
   }
 });
 var Bullitin = React.createClass({
-  getInitialState: function(){
-    return {
-
-    }
-  },
   render: function() {
     return <div  className="bullitin" >
       
@@ -47,11 +39,6 @@ var Bullitin = React.createClass({
 });
 
 var BkDay = React.createClass({
-  getInitialState: function(){
-    return {
-
-    }
-  },
   render: function() {
     return <div onClick={this.handleRecord} className="day" >
       {this.props.curMonth}月{this.props.curDate}日
