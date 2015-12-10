@@ -32,8 +32,8 @@ var Header = React.createClass({
 });
 var Bullitin = React.createClass({
   render: function() {
-    return <div  className="bullitin" >
-      
+    return <div className={"bullitin " + (this.props.bullitin == true?"show":"hide")}>
+  vfgsrbrgnbgtr
     </div>
   }
 });
@@ -110,7 +110,8 @@ var BkMonth = React.createClass({
   getInitialState: function(){
     return {
       selected: null,
-      records2: this.props.records
+      records2: this.props.records,
+      bullitin: false
     }
   },
   componentWillRecieveProps: function(){
@@ -181,7 +182,7 @@ var BkMonth = React.createClass({
    return  <div>
    <nav>
    <button onClick={this.handleAdd}>ADD</button>
-   <button ref="keke" value="bubu">DETAIL</button>
+   <button  value="bubu">DETAIL</button>
    <button>DELETE</button>
    </nav>
               <div className="grid-title">SUN</div>
@@ -195,7 +196,7 @@ var BkMonth = React.createClass({
    <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth}  records={this.state.records} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
     {grids}
    </GridGroup>
-   <Bullitin/>
+   <Bullitin bullitin={this.state.bullitin} />
   </div>
   },
   handleChange: function(selected, clickedData){
@@ -206,8 +207,15 @@ var BkMonth = React.createClass({
   },
   handleAdd: function(selected){
     var content = this.state.clickedData;
-    //alert(content);
+    this.setState({
+      bullitin: true
+    });
+    console.log(content);
   }
+  // showBullitin: function(){
+  //   if (this.state.bullitin) {};
+  //   return <Bullitin/>
+  // }
 });
 
 var App = React.createClass({
