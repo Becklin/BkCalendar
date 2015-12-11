@@ -275,6 +275,15 @@ var BkMonth = React.createClass({
 var App = React.createClass({
   mixins: [ Reactfire ],
   componentWillMount:function(){
+    // this.fb = new Firebase(rootUrl + 'records/');
+    // this.bindAsObject(this.fb, 'records');
+    // //we bound our data as an object to => "items" this.state.items
+    // this.fb.on('value', function(snapshot) {
+    //   console.log(snapshot.val());
+    // }, function (errorObject) {
+    //   console.log("The read failed: " + errorObject.code);
+    // });
+
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
     //we bound our data as an object to => "items" this.state.items
