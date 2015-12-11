@@ -73,6 +73,7 @@ var Bullitin = React.createClass({
       this.setState({
         bullitinStatus: false
       })
+      this.props.handleClose();
     }.bind(this));
   }
 });
@@ -140,10 +141,21 @@ var GridGroup = React.createClass({ //操作格子的變色
 
 var BkMonth = React.createClass({
   mixins: [ Reactfire, BkCalendarMixin ],
+  getInitialState: function(){
+    return {
+      records:{}
+    }
+  },
   componentWillMount:function(){
-    this.fb = new Firebase(rootUrl + 'records/');
-    this.bindAsObject(this.fb, 'records');
-    //this.fb.on('value', this.handleDataLoaded);
+  //   this.fb = new Firebase(rootUrl + 'records/');
+  //   this.bindAsObject(this.fb, 'records');
+  //   //we bound our data as an object to => "items" this.state.items
+  //   this.fb.on('value', this.handleDataLoaded, function (errorObject) {
+  //     console.log("The read failed: " + errorObject.code);
+  //   });
+  // },
+  // handleDataLoaded: function(){
+  //   console.log(Object.keys(this.state.records));
   },
   getInitialState: function(){
     return {
@@ -153,7 +165,13 @@ var BkMonth = React.createClass({
       bullitinStatus: false
     }
   },
+  // componentWillReceiveProps: function(nextProps){
+  //   if (nextProps.records !== this.props.records) {
+  //     alert("good");
+  //   };
+  // },
   render: function() {
+    console.log("snapshotVVV = " + Object.keys(this.props.records));
    var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
@@ -214,6 +232,7 @@ var BkMonth = React.createClass({
         );
      }
     };
+
    return  <div>
    <nav>
    <button onClick={this.handleAdd}>ADD</button>
@@ -259,11 +278,13 @@ var App = React.createClass({
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
     //we bound our data as an object to => "items" this.state.items
-    this.fb.on('value', function(snapshot) {
-      console.log(snapshot.val());
-    }, function (errorObject) {
+    this.fb.on('value', this.handleDataLoaded, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
+
+  },
+  handleDataLoaded: function(){
+    console.log("1lEVEL" + Object.keys(this.state.records));
   },
   getInitialState: function(){
     return {
@@ -277,7 +298,7 @@ var App = React.createClass({
     return <div className="app">
              <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
               <hr />
-             <BkMonth records={this.firebaseRefs.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <BkMonth records={this.state.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
           </div>
