@@ -24,17 +24,23 @@ var Header = React.createClass({
   }
 });
 var Bullitin = React.createClass({
-  mixins: [ BkCalendarMixin ],
+  mixins: [ Reactfire, BkCalendarMixin ],
   getInitialState: function(){
     return {
+      records:{},
       bullitinStatus: this.props.bullitinProp
     }
+  },
+  componentWillMount: function(){
+
   },
   componentWillReceiveProps: function(nextProps){ //第一次render不會跑
       this.setState({
         bullitinStatus: nextProps.bullitinProp
       })
+
   },
+
   render: function() {
   return <div className={"bullitin " + (this.state.bullitinStatus == true?"show":"hide")}>
   <button onClick={this.props.handleClose}>CLOSE</button>
@@ -43,11 +49,11 @@ var Bullitin = React.createClass({
   <h2>{this.props.clickedData}</h2>
     <fieldset>
       <h2>TITLE</h2>
-    <input className="record-title" type="text" value={this.state.title}  onChange={this.handleTitle} />
+    <input className="record-title" type="text" value={this.props.title}  onChange={this.handleTitle} />
     </fieldset>
     <fieldset>
       <h2>DESCRIPTION</h2>
-      <textarea className="record-content" name="description" value={this.state.content}  onChange={this.handleContent} >
+      <textarea className="record-content" name="description" value={this.props.content}  onChange={this.handleContent} >
       </textarea>
     </fieldset>
   </form>
@@ -64,24 +70,29 @@ var Bullitin = React.createClass({
     })
   },
   handleSubmit: function(){
-    this.props.recordsStore.child(this.props.clickedData).set({ // push: is a firebase method we create new object to our remote database
-      title: this.state.title, //this.state.title,
-      content: this.state.content, //this.state.content,
-      done: false //set flase means we havnt complete the todo item.
-    },function(){
-      alert("SUCCESS!");
-      this.setState({
-        bullitinStatus: false
-      })
-      this.props.handleClose();
+    this.ref = new Firebase(rootUrl + 'records/');
+    this.bindAsObject(this.ref, 'records');
+    //we bound our data as an object to => "items" this.state.items
+    this.ref.on('value', function(){
+          this.ref.child(this.props.clickedData).set({ // push: is a firebase method we create new object to our remote database
+          title: this.state.title, //this.state.title,
+          content: this.state.content, //this.state.content,
+          done: false //set false means we havnt complete the todo item.
+        },function(){
+          alert("SUCCESS!");
+          this.setState({
+            bullitinStatus: false
+          })
+          this.props.handleClose();
+        }.bind(this));
     }.bind(this));
   }
 });
 
 var BkDay = React.createClass({
   render: function() {
-    return <div onClick={this.handleRecord} className="day" >
-      {this.props.curMonth}月{this.props.curDate}日
+    return <div onClick={this.handleRecord} className={"day " + (this.props.marked?"marked":"")} >
+      {this.props.title} <br/> {this.props.curMonth}月{this.props.curDate}日
     </div>
   }
 });
@@ -95,8 +106,8 @@ var GridGroup = React.createClass({ //操作格子的變色
     return cloneWithProps(div, { 
       className: this.props.value === index ? 'active' : '',
 
-      onClick: function(){
-      var clickedData = "";
+     onClick: function(){
+     var clickedData = "";
      if(index < this.props.bkcurDate.getDay()){
           //上月
             var prevMonthFirstDate = new Date(this.props.bkcurDate.getTime()); //複製目前的日期
@@ -133,7 +144,13 @@ var GridGroup = React.createClass({ //操作格子的變色
           nextDateFormat = this.formatGenerator(nextDateFormat);
           clickedData = this.props.bkcurDate.getFullYear().toString() + nextMonthFormat.toString() + nextDateFormat.toString();
         }
-        this.props.onChange(index, clickedData); 
+        for(key in this.props.records){
+          if (clickedData == key) {
+           var recordTitle = this.props.records[key].title,
+               recordContent = this.props.records[key].content;
+          };
+        }
+        this.props.onChange(index, clickedData, recordTitle, recordContent); 
       }.bind(this)
     });
   }
@@ -141,37 +158,26 @@ var GridGroup = React.createClass({ //操作格子的變色
 
 var BkMonth = React.createClass({
   mixins: [ Reactfire, BkCalendarMixin ],
-  getInitialState: function(){
-    return {
-      records:{}
-    }
-  },
   componentWillMount:function(){
-  //   this.fb = new Firebase(rootUrl + 'records/');
-  //   this.bindAsObject(this.fb, 'records');
-  //   //we bound our data as an object to => "items" this.state.items
-  //   this.fb.on('value', this.handleDataLoaded, function (errorObject) {
-  //     console.log("The read failed: " + errorObject.code);
-  //   });
-  // },
-  // handleDataLoaded: function(){
-  //   console.log(Object.keys(this.state.records));
+    this.fb = new Firebase(rootUrl + 'records/');
+    this.bindAsObject(this.fb, 'records');
+    //we bound our data as an object to => "items" this.state.items
+    this.fb.on('value', this.handleDataLoaded, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+  },
+  handleDataLoaded: function(){
   },
   getInitialState: function(){
     return {
       selected: null,
       clickedData: null,
-      records: this.props.records,
-      bullitinStatus: false
+      records: {},
+      bullitinStatus: false,
+      marked: true
     }
   },
-  // componentWillReceiveProps: function(nextProps){
-  //   if (nextProps.records !== this.props.records) {
-  //     alert("good");
-  //   };
-  // },
   render: function() {
-    console.log("snapshotVVV = " + Object.keys(this.props.records));
    var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
@@ -186,13 +192,25 @@ var BkMonth = React.createClass({
 
           prevMonthFormat = this.formatGenerator(prevMonthFormat);
           prevDateFormat = this.formatGenerator(prevDateFormat);
+          var dateStr = prevMonthFirstDate.getFullYear() + prevMonthFormat + prevDateFormat;
+          var dateJSX = <div 
+                             className="grid" 
+                             key={i} >
+                              <BkDay  curDate={prevDateFormat} curMonth={prevMonthFormat} />
+                        </div>
+
+          for(var key in this.state.records) {
+              if(dateStr == key){
+                dateJSX = <div 
+                  className="grid" 
+                  key={i} >
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={prevDateFormat} curMonth={prevMonthFormat} />
+                  </div>
+                } 
+          }
 
        grids.push(
-          <div 
-          className="grid" 
-          key={i} >
-             <BkDay curDate={prevDateFormat} curMonth={prevMonthFormat} />
-          </div>
+          dateJSX
         );
      } 
      //該月份顯示
@@ -204,12 +222,23 @@ var BkMonth = React.createClass({
            MonthFormat = this.formatGenerator(MonthFormat);
            dateFormat = this.formatGenerator(dateFormat);
 
+          var dateStr = this.props.bkcurDate.getFullYear() + MonthFormat + dateFormat;
+          var dateJSX = <div 
+                             className="grid" 
+                             key={i} >
+                              <BkDay  curDate={dateFormat} curMonth={MonthFormat} />
+                        </div>
+          for(var key in this.state.records) {
+              if(dateStr == key){
+                dateJSX = <div 
+                  className="grid" 
+                  key={i} >
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={dateFormat} curMonth={MonthFormat} />
+                  </div>
+                } 
+          }
        grids.push(
-          <div 
-          className="grid this-month" 
-          key={i} >
-            <BkDay curDate={dateFormat} curMonth={MonthFormat} />
-          </div>
+          dateJSX
         );
      //月份以後顯示
      } else if(i >= (this.props.bkcurDate.getDay() + this.props.bkmonthDaysinMonth)){
@@ -223,12 +252,24 @@ var BkMonth = React.createClass({
         nextMonthFormat = this.formatGenerator(nextMonthFormat);
         nextDateFormat = this.formatGenerator(nextDateFormat);
 
+
+          var dateStr = this.props.bkcurDate.getFullYear() + nextMonthFormat + nextDateFormat;
+          var dateJSX = <div 
+                             className="grid" 
+                             key={i} >
+                              <BkDay  curDate={nextDateFormat} curMonth={nextMonthFormat} />
+                        </div>
+          for(var key in this.state.records) {
+              if(dateStr == key){
+                dateJSX = <div 
+                  className="grid" 
+                  key={i} >
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={nextDateFormat} curMonth={nextMonthFormat} />
+                  </div>
+                } 
+          }
        grids.push(
-          <div 
-          className="grid" 
-          key={i} >
-             <BkDay curDate={nextDateFormat} curMonth={nextMonthFormat} />
-          </div>
+          dateJSX
         );
      }
     };
@@ -247,16 +288,18 @@ var BkMonth = React.createClass({
               <div className="grid-title">FRI</div>
               <div className="grid-title">SAT</div>
 
-   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth} recordsStore={this.firebaseRefs.records} onChange={this.handleChange}  value={this.state.selected}>
+   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth} records={this.state.records} onChange={this.handleChange}  value={this.state.selected}>
     {grids}
    </GridGroup>
-   <Bullitin clickedData={this.state.clickedData} handleClose={this.handleClose} handleSubmit={this.handleSubmit} bkcurDate={this.props.bkcurDate} recordsStore={this.firebaseRefs.records} bullitinProp={this.state.bullitinStatus} />
+   <Bullitin records={this.state.records} clickedData={this.state.clickedData}  title={this.state.title}  content={this.state.content}  handleClose={this.handleClose} handleSubmit={this.handleSubmit} bkcurDate={this.props.bkcurDate}  bullitinProp={this.state.bullitinStatus} />
   </div>
   },
-  handleChange: function(selected, clickedData){
+  handleChange: function(selected, clickedData, title, content){
     this.setState({
       selected: selected,
-      clickedData: clickedData
+      clickedData: clickedData,
+      title: title,
+      content: content
     });
   },
   handleAdd: function(selected){
@@ -274,27 +317,6 @@ var BkMonth = React.createClass({
 
 var App = React.createClass({
   mixins: [ Reactfire ],
-  componentWillMount:function(){
-    // this.fb = new Firebase(rootUrl + 'records/');
-    // this.bindAsObject(this.fb, 'records');
-    // //we bound our data as an object to => "items" this.state.items
-    // this.fb.on('value', function(snapshot) {
-    //   console.log(snapshot.val());
-    // }, function (errorObject) {
-    //   console.log("The read failed: " + errorObject.code);
-    // });
-
-    this.fb = new Firebase(rootUrl + 'records/');
-    this.bindAsObject(this.fb, 'records');
-    //we bound our data as an object to => "items" this.state.items
-    this.fb.on('value', this.handleDataLoaded, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
-
-  },
-  handleDataLoaded: function(){
-    console.log("1lEVEL" + Object.keys(this.state.records));
-  },
   getInitialState: function(){
     return {
         records: {}, 
@@ -307,7 +329,7 @@ var App = React.createClass({
     return <div className="app">
              <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
               <hr />
-             <BkMonth records={this.state.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
           </div>
