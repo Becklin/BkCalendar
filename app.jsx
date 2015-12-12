@@ -73,6 +73,7 @@ var Bullitin = React.createClass({
       this.setState({
         bullitinStatus: false
       })
+      this.props.handleClose();
     }.bind(this));
   }
 });
@@ -140,10 +141,21 @@ var GridGroup = React.createClass({ //操作格子的變色
 
 var BkMonth = React.createClass({
   mixins: [ Reactfire, BkCalendarMixin ],
+  getInitialState: function(){
+    return {
+      records:{}
+    }
+  },
   componentWillMount:function(){
-    this.fb = new Firebase(rootUrl + 'records/');
-    this.bindAsObject(this.fb, 'records');
-    //this.fb.on('value', this.handleDataLoaded);
+  //   this.fb = new Firebase(rootUrl + 'records/');
+  //   this.bindAsObject(this.fb, 'records');
+  //   //we bound our data as an object to => "items" this.state.items
+  //   this.fb.on('value', this.handleDataLoaded, function (errorObject) {
+  //     console.log("The read failed: " + errorObject.code);
+  //   });
+  // },
+  // handleDataLoaded: function(){
+  //   console.log(Object.keys(this.state.records));
   },
   getInitialState: function(){
     return {
@@ -153,7 +165,13 @@ var BkMonth = React.createClass({
       bullitinStatus: false
     }
   },
+  // componentWillReceiveProps: function(nextProps){
+  //   if (nextProps.records !== this.props.records) {
+  //     alert("good");
+  //   };
+  // },
   render: function() {
+    console.log("snapshotVVV = " + Object.keys(this.props.records));
    var grids = [];
     for (var i = 0; i < 42; i++) {
       //該月份以前顯示
@@ -214,6 +232,7 @@ var BkMonth = React.createClass({
         );
      }
     };
+
    return  <div>
    <nav>
    <button onClick={this.handleAdd}>ADD</button>
@@ -268,42 +287,13 @@ var App = React.createClass({
     this.fb = new Firebase(rootUrl + 'records/');
     this.bindAsObject(this.fb, 'records');
     //we bound our data as an object to => "items" this.state.items
-    // this.fb.on('child_added', function(snapshot, prevChildKey) {
-    //   var newRecord = snapshot.val();
-    //   console.log("Title: " + newRecord.title);
-    //   console.log("Content: " + newRecord.content);
-    //   console.log("Previous Post ID: " + prevChildKey);
-    // });
+    this.fb.on('value', this.handleDataLoaded, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
 
-var ref = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts");
-
-var count = 0;
-
-this.fb.on("child_added", function(snap) {
-  count++;
-  console.log("added", snap.key());
-  console.log(count);
-  
-});
-
-// length will always equal count, since snap.val() will include every child_added event
-// triggered before this point
-this.fb.once("value", function(snap) {
-  console.log("initial data loaded!", Object.keys(snap.val()).length === count);
-});
-
-    // Get a reference to our posts
-    // var ref = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts");
-
-    // // Retrieve new posts as they are added to our database
-    // ref.on("child_added", function(snapshot, prevChildKey) {
-    //   var newPost = snapshot.val();
-    //   console.log("Author: " + newPost.author);
-    //   console.log("Title: " + newPost.title);
-    //   console.log("Previous Post ID: " + prevChildKey);
-    // });
-
-
+  },
+  handleDataLoaded: function(){
+    console.log("1lEVEL" + Object.keys(this.state.records));
   },
   getInitialState: function(){
     return {
@@ -317,7 +307,7 @@ this.fb.once("value", function(snap) {
     return <div className="app">
              <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
               <hr />
-             <BkMonth records={this.firebaseRefs.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <BkMonth records={this.state.records}  bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
           </div>
