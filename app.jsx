@@ -28,7 +28,9 @@ var Bullitin = React.createClass({
   getInitialState: function(){
     return {
       records:{},
-      bullitinStatus: this.props.bullitinProp
+      bullitinStatus: this.props.bullitinProp,
+      title: null,
+      content: null
     }
   },
   componentWillMount: function(){
@@ -36,11 +38,12 @@ var Bullitin = React.createClass({
   },
   componentWillReceiveProps: function(nextProps){ //第一次render不會跑
       this.setState({
-        bullitinStatus: nextProps.bullitinProp
+        bullitinStatus: nextProps.bullitinProp,
+        title: nextProps.title,
+        content: nextProps.content
       })
 
   },
-
   render: function() {
   return <div className={"bullitin " + (this.state.bullitinStatus == true?"show":"hide")}>
   <button onClick={this.props.handleClose}>CLOSE</button>
@@ -49,11 +52,11 @@ var Bullitin = React.createClass({
   <h2>{this.props.clickedData}</h2>
     <fieldset>
       <h2>TITLE</h2>
-    <input className="record-title" type="text" value={this.props.title}  onChange={this.handleTitle} />
+    <input className="record-title" type="text" value={this.state.title}  onChange={this.handleTitle} />
     </fieldset>
     <fieldset>
       <h2>DESCRIPTION</h2>
-      <textarea className="record-content" name="description" value={this.props.content}  onChange={this.handleContent} >
+      <textarea className="record-content" name="description" value={this.state.content}  onChange={this.handleContent} >
       </textarea>
     </fieldset>
   </form>
@@ -79,13 +82,16 @@ var Bullitin = React.createClass({
           content: this.state.content, //this.state.content,
           done: false //set false means we havnt complete the todo item.
         },function(){
-          alert("SUCCESS!");
+          console.log("SUCCESS!");
           this.setState({
             bullitinStatus: false
           })
           this.props.handleClose();
         }.bind(this));
     }.bind(this));
+  },
+  handleDeleteClick: function() {
+    this.fb.remove();
   }
 });
 
@@ -174,7 +180,9 @@ var BkMonth = React.createClass({
       clickedData: null,
       records: {},
       bullitinStatus: false,
-      marked: true
+      marked: true,
+      title: null,
+      content: null
     }
   },
   render: function() {
@@ -224,10 +232,18 @@ var BkMonth = React.createClass({
 
           var dateStr = this.props.bkcurDate.getFullYear() + MonthFormat + dateFormat;
           var dateJSX = <div 
-                             className="grid" 
+                             className="grid this-month" 
                              key={i} >
                               <BkDay  curDate={dateFormat} curMonth={MonthFormat} />
                         </div>
+                        console.log(dateStr);
+          if (dateStr === this.props.todayStr) {
+             dateJSX = <div 
+                             className="grid this-month today" 
+                             key={i} >
+                              <BkDay  curDate={dateFormat} curMonth={MonthFormat} />
+                        </div>
+          };
           for(var key in this.state.records) {
               if(dateStr == key){
                 dateJSX = <div 
@@ -276,9 +292,9 @@ var BkMonth = React.createClass({
 
    return  <div>
    <nav>
-   <button onClick={this.handleAdd}>ADD</button>
-   <button  value="bubu">DETAIL</button>
-   <button>DELETE</button>
+   {this.handleBkDayDisplay()}
+   {this.handleDeleteDisplay()}
+
    </nav>
               <div className="grid-title">SUN</div>
               <div className="grid-title">MON</div>
@@ -302,15 +318,53 @@ var BkMonth = React.createClass({
       content: content
     });
   },
-  handleAdd: function(selected){
-    var content = this.state.clickedData;
+  handleBkDay: function(){
     this.setState({
       bullitinStatus: true
     });
   },
+  handleBkDayDisplay: function(){
+   if(!this.state.clickedData) {
+     return null;
+   } else {
+      if (!this.state.title) {
+         return <button 
+         onClick={this.handleBkDay}
+         >
+         ADD
+       </button>
+      } else {
+         return <button 
+         onClick={this.handleBkDay}
+         >
+         DETAIL
+         </button>
+     }
+   };
+  },
+  handleDelete: function(){
+    var DeletedData = new Firebase(rootUrl + "records/" + this.state.clickedData);
+    DeletedData.remove();
+  },
+  handleDeleteDisplay: function(){
+   if(!this.state.clickedData) {
+     return null;
+   } else {
+      if (!this.state.title) {
+         return;
+      } else {
+         return <button 
+         onClick={this.handleDelete}
+         >
+         DELETE
+         </button>
+     }
+   };
+  },
   handleClose: function(){
     this.setState({
-      bullitinStatus: false
+      bullitinStatus: false,
+      content: null
     });
   }
 });
@@ -321,6 +375,7 @@ var App = React.createClass({
     return {
         records: {}, 
         curDate: this.props.curDate,
+        todayStr: this.props.todayStr,
         title: "",
         monthDaysinMonth: this.props.monthDaysinMonth
     }
@@ -329,10 +384,20 @@ var App = React.createClass({
     return <div className="app">
              <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
               <hr />
-             <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth}  />
+             <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth} todayStr={this.state.todayStr} />
              <button onClick={this.prevMonth}>PREV MONTH</button>
              <button onClick={this.nextMonth}>NEXT MONTH</button>
+             <button onClick={this.showToday}>TODAY</button>
+
           </div>
+  },
+  showToday: function(){
+        var curDate =  new Date(),   //本日
+            monthDaysinMonth = new Date(curDate.getFullYear(), curDate.getMonth()+1, 0).getDate(); //該月有幾天
+            this.setState({
+                curDate: curDate,
+                monthDaysinMonth: monthDaysinMonth
+            });
   },
   nextMonth: function(){
         var curDate = this.state.curDate,
@@ -363,7 +428,8 @@ var curDate =  new Date(),   //本日
 
 var options = {
       curDate: curDate,   //本日
-      monthDaysinMonth:  monthDaysinMonth  //該月有幾天
+      monthDaysinMonth:  monthDaysinMonth,  //該月有幾天,
+      todayStr: curDate.getFullYear().toString() + (curDate.getMonth() + 1).toString() + curDate.getDate().toString()
 }
 
 var element = React.createElement(App, options);

@@ -29,6 +29,9 @@ body {
 .this-month {
   background: #DADADA; }
 
+.today {
+  background: yellow; }
+
 .bullitin {
   position: absolute;
   width: 100%;
