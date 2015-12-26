@@ -1,0 +1,74 @@
+//variables
+// $link-color-1: #000  ;
+// $link-color-2: blue  ;
+// //calculation
+// $font-size:16px  ;
+// .font-big  {
+//   font-size: $font-size * 1.2  ;
+// }
+// .font-middle  {
+//   font-size: $font-size - 3px  ;
+// }
+// .font-small  {
+//   font-size: $font-size / 3 ;
+// }
+// //mixin
+// @mixin bg($bgcolor:#000,$width:201px)  ; 
+//     background: $bgcolor  ;
+//     width: $width  ;
+// .header  {
+//     +bg ;
+// }
+// .footer  {
+//     +bg(#ff0000,300px)  ;
+// }
+
+// //extend 「%」後面加上自己命名要合併樣式的名稱
+// %all-h1  {
+//     font-size: 20px  ;
+//     line-height: 1.8  ;
+//     letter-spacing: 1px ; 
+// }
+// .header h1  {
+//     @extend %all-h1  ;
+//     color: #000  ;
+// }
+// .content h1  {
+//     @extend %all-h1  ; 
+//     color: green  ;
+// }
+// .footer  {
+//     @extend %all-h1 ;
+//     color: pink  ;
+// }
+// //content
+// @mixin bg($text-color,$bg-color){  
+//   background: $bg-color;  
+//   color: $text-color;  
+//   @content;    //多了一個@content  
+// }  
+// .box{  
+//   @include bg(#fff,#000){  
+//     border: 1px solid lighten(#000, 10);  //將額外的程式碼寫在@include中括號裡面  
+//   }  
+// }  
+//font
+$font-family-title: 'Chivo', sans-serif, Helvetica, Arial;
+$font-family-subtitle: 'Oswald', sans-serif;
+$font-family-content: 'Roboto Condensed', sans-serif;
+
+//color
+body {
+	background: blue;
+	font-family: $font-family-content;
+}
+//rwd
+
+//components --> grids
+
+//components --> buttons
+
+
+
+
+

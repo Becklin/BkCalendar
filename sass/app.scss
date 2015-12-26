@@ -1,6 +1,5 @@
-body {
-	background: #f7fdef;
-}
+@import "_div.scss";
+
 .app {
 	position: relative;
 }
@@ -8,13 +7,15 @@ body {
  text-align: center;
  line-height: 70px;
  font-size: 36px;
+ border: 3px solid red;
 }
 .grid-title, .grid {
-	float: left;
-	border:1px solid gray;
+	float: left; 
+	border: 1px solid #fff;
 	background: #EFEFEF;
 	width: 13%;
 	height:70px;
+	//font-family: $font-family-content;
 }
 .grid {
 	cursor: pointer;

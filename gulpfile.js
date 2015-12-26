@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass'); //需要先載入gulp-concat
 var source = require('vinyl-source-stream');
+var watch = require('gulp-watch');
 /*
 Browserify lets you require('modules') in the browser by bundling up all of your dependencies.
 */
@@ -33,9 +34,9 @@ var notify = function(error) {
   var title = '錯了: ';
 
   if(error.description) {
-    title += error.description;
+    title += error.description + "damn";
   } else if (error.message) {
-    title += error.message;
+    title += error.message + "damn";
   }
 
 
@@ -46,7 +47,7 @@ var notify = function(error) {
   }
 
   if(error.lineNumber) {
-    message += '\nOn 行數: ' + error.lineNumber;
+    message += '\nOn 行數: ' + error.lineNumber + "damn2";
   }
 
   notifier.notify({title: title, message: message, wait: true});
@@ -77,16 +78,16 @@ gulp.task('build', function() {
 });
 
 gulp.task('serve', function(done) {
-  gulp.src('')
-    .pipe(server({
-      livereload: {
-        enable: true,
-        filter: function(filePath, cb) { //function to filter out files to watch (default filters out node_modules).
-          cb( /mainJS.js/.test(filePath) )
-        }
-      },
-      open: false  //open the localhost server in the browser
-    }));
+    gulp.src('')
+        .pipe(server({
+            livereload: {
+                enable: true,
+                filter: function(filePath, cb) { //function to filter out files to watch (default filters out node_modules).
+                    cb(/mainJS.js/.test(filePath));
+                }
+            },
+            open: false //open the localhost server in the browser
+        }));
 });
 
 gulp.task('sass', function () {
@@ -96,7 +97,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('default', ['build', 'serve', 'sass']);
+gulp.task('default', ['build', 'serve', 'sass', 'watch']);
 /*
 Gulp has the ability to watch files for changes and then run a task or tasks when changes are detected. 
 This feature is amazingly useful (and, for me, probably Gulp’s single most useful one). 

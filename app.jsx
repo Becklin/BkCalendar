@@ -96,8 +96,10 @@ var Bullitin = React.createClass({
 });
 
 var BkDay = React.createClass({
+
   render: function() {
-    return <div onClick={this.handleRecord} className={"day " + (this.props.marked?"marked":"")} >
+
+    return <div onClick={this.handleRecord} className={"day " + (this.props.marked?"marked ":"") + (this.props.today?"today ":"") + (this.props.activeStatus?"active":"")} >
       {this.props.title} <br/> {this.props.curMonth}月{this.props.curDate}日
     </div>
   }
@@ -110,7 +112,7 @@ var GridGroup = React.createClass({ //操作格子的變色
   },
   renderItem: function(div, index){
     return cloneWithProps(div, { 
-      className: this.props.value === index ? 'active' : '',
+    // className: this.props.value === index ? 'active' : '',
 
      onClick: function(){
      var clickedData = "";
@@ -156,6 +158,9 @@ var GridGroup = React.createClass({ //操作格子的變色
                recordContent = this.props.records[key].content;
           };
         }
+      // if (this.props.value === index) {
+      //   alert("bingo");
+      // };
         this.props.onChange(index, clickedData, recordTitle, recordContent); 
       }.bind(this)
     });
@@ -197,22 +202,25 @@ var BkMonth = React.createClass({
                 prevMonth = prevMonthFirstDate.getMonth()+1;
             var prevMonthFormat = (prevMonth==0?12:prevMonth),
                 prevDateFormat = prevMonthDaysinMonth + (i - dayBefore);
-
+           var activeStatus = false;
           prevMonthFormat = this.formatGenerator(prevMonthFormat);
           prevDateFormat = this.formatGenerator(prevDateFormat);
           var dateStr = prevMonthFirstDate.getFullYear() + prevMonthFormat + prevDateFormat;
+          if (i == this.state.selected) {
+             activeStatus = true;
+          };
           var dateJSX = <div 
-                             className="grid" 
+                             className="grid"
                              key={i} >
-                              <BkDay  curDate={prevDateFormat} curMonth={prevMonthFormat} />
+                              <BkDay activeStatus={activeStatus} curDate={prevDateFormat} curMonth={prevMonthFormat} />
                         </div>
 
           for(var key in this.state.records) {
               if(dateStr == key){
                 dateJSX = <div 
-                  className="grid" 
+                  className="grid"
                   key={i} >
-                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={prevDateFormat} curMonth={prevMonthFormat} />
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} activeStatus={activeStatus} curDate={prevDateFormat} curMonth={prevMonthFormat} />
                   </div>
                 } 
           }
@@ -226,30 +234,27 @@ var BkMonth = React.createClass({
        var day  = this.props.bkcurDate.getDay()-1, //取得星期顯示
            MonthFormat = this.props.bkcurDate.getMonth() + 1, //取得該月顯示
            dateFormat = i - day;
-
+           var activeStatus = false;
+           //var today = false;
            MonthFormat = this.formatGenerator(MonthFormat);
            dateFormat = this.formatGenerator(dateFormat);
 
           var dateStr = this.props.bkcurDate.getFullYear() + MonthFormat + dateFormat;
+          if (i == this.state.selected) {
+             activeStatus = true;
+          };
           var dateJSX = <div 
                              className="grid this-month" 
                              key={i} >
-                              <BkDay  curDate={dateFormat} curMonth={MonthFormat} />
+                              <BkDay today={(dateStr === this.props.todayStr)?true:false} activeStatus={activeStatus} curDate={dateFormat} curMonth={MonthFormat} />
                         </div>
-                        console.log(dateStr);
-          if (dateStr === this.props.todayStr) {
-             dateJSX = <div 
-                             className="grid this-month today" 
-                             key={i} >
-                              <BkDay  curDate={dateFormat} curMonth={MonthFormat} />
-                        </div>
-          };
+
           for(var key in this.state.records) {
               if(dateStr == key){
                 dateJSX = <div 
-                  className="grid" 
+                  className="grid this-month" 
                   key={i} >
-                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={dateFormat} curMonth={MonthFormat} />
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} today={(dateStr === this.props.todayStr)?true:false}  activeStatus={activeStatus} curDate={dateFormat} curMonth={MonthFormat} />
                   </div>
                 } 
           }
@@ -264,23 +269,26 @@ var BkMonth = React.createClass({
             nextMonth = nextMonthFirstDate.getMonth();
         var nextMonthFormat = nextMonth==0?12:nextMonth,
             nextDateFormat = i - this.props.bkmonthDaysinMonth - dayAfter;
-
+        var activeStatus = false;
         nextMonthFormat = this.formatGenerator(nextMonthFormat);
         nextDateFormat = this.formatGenerator(nextDateFormat);
 
 
           var dateStr = this.props.bkcurDate.getFullYear() + nextMonthFormat + nextDateFormat;
+          if (i == this.state.selected) {
+             activeStatus = true;
+          };
           var dateJSX = <div 
                              className="grid" 
                              key={i} >
-                              <BkDay  curDate={nextDateFormat} curMonth={nextMonthFormat} />
+                              <BkDay activeStatus={activeStatus} curDate={nextDateFormat} curMonth={nextMonthFormat} />
                         </div>
           for(var key in this.state.records) {
               if(dateStr == key){
                 dateJSX = <div 
                   className="grid" 
                   key={i} >
-                     <BkDay marked={this.state.marked} title={this.state.records[key].title} curDate={nextDateFormat} curMonth={nextMonthFormat} />
+                     <BkDay marked={this.state.marked} title={this.state.records[key].title} activeStatus={activeStatus} curDate={nextDateFormat} curMonth={nextMonthFormat} />
                   </div>
                 } 
           }
@@ -304,13 +312,20 @@ var BkMonth = React.createClass({
               <div className="grid-title">FRI</div>
               <div className="grid-title">SAT</div>
 
-   <GridGroup bkcurDate={this.props.bkcurDate}  bkmonthDaysinMonth={this.props.bkmonthDaysinMonth} records={this.state.records} onChange={this.handleChange}  value={this.state.selected}>
+   <GridGroup 
+      bkcurDate={this.props.bkcurDate}  
+      bkmonthDaysinMonth={this.props.bkmonthDaysinMonth} 
+      records={this.state.records} 
+      onChange={this.handleChange}  
+      value={this.state.selected}
+    >
     {grids}
    </GridGroup>
    <Bullitin records={this.state.records} clickedData={this.state.clickedData}  title={this.state.title}  content={this.state.content}  handleClose={this.handleClose} handleSubmit={this.handleSubmit} bkcurDate={this.props.bkcurDate}  bullitinProp={this.state.bullitinStatus} />
   </div>
   },
   handleChange: function(selected, clickedData, title, content){
+    // alert(selected);
     this.setState({
       selected: selected,
       clickedData: clickedData,
