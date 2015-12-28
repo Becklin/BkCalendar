@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass'); //需要先載入gulp-concat
+// var bulkSass = require('gulp-sass-bulk-import');
 var source = require('vinyl-source-stream');
 var watch = require('gulp-watch');
 /*
@@ -90,20 +91,22 @@ gulp.task('serve', function(done) {
         }));
 });
 
-gulp.task('sass', function () {
-  gulp.src('./sass/**/*.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(concat('style.css'))
-    .pipe(gulp.dest('./'));
+
+gulp.task('styles', function() {
+    gulp.src('sass/**/*.scss')
+        .pipe(sass({ includePaths : ['sass/**'] }).on('error', sass.logError))
+        .pipe(concat('style.css'))
+        .pipe(gulp.dest('./css/'));
 });
 
-gulp.task('default', ['build', 'serve', 'sass', 'watch']);
-/*
-Gulp has the ability to watch files for changes and then run a task or tasks when changes are detected. 
-This feature is amazingly useful (and, for me, probably Gulp’s single most useful one). 
-You can save your LESS file, and Gulp will turn it into CSS and update the browser 
-without your having to do anything.
-*/
-gulp.task('watch', function () {  
-  gulp.watch('./sass/**/*.scss', ['sass']);
+gulp.task('default', ['build', 'serve', 'styles', 'watch']);
+
+
+// gulp.task('sass:watch', function () {
+//   gulp.watch('./sass/**/*.scss', ['sass']);
+// });
+
+//Watch task
+gulp.task('watch',function() {
+    gulp.watch('sass/**/*.scss',['styles']);
 });

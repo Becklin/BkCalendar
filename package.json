@@ -21,5 +21,8 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^2.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gulp-sass": "^2.1.1",
+    "gulp-sass-bulk-import": "^0.3.2"
+  }
 }
