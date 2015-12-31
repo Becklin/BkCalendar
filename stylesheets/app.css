@@ -3,11 +3,6 @@ body {
   font-family: "Roboto Condensed", sans-serif;
 }
 
-body {
-  background: pink !important;
-  font-family: "Roboto Condensed", sans-serif;
-}
-
 .app {
   position: relative;
 }

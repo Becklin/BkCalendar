@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var sass = require('gulp-sass'); //需要先載入gulp-concat
-// var bulkSass = require('gulp-sass-bulk-import');
+// var sass = require('gulp-sass'); //需要先載入gulp-concat
+var compass = require('gulp-compass');
 var source = require('vinyl-source-stream');
 var watch = require('gulp-watch');
 /*
@@ -92,21 +92,20 @@ gulp.task('serve', function(done) {
 });
 
 
-gulp.task('styles', function() {
-    gulp.src('sass/**/*.scss')
-        .pipe(sass({ includePaths : ['sass/**'] }).on('error', sass.logError))
-        .pipe(concat('style.css'))
-        .pipe(gulp.dest('./css/'));
+gulp.task('compass', function() {
+  gulp.src('sass/**/*.scss')
+    .pipe(compass({
+      config_file: './config.rb',
+      css: 'stylesheets',
+      sass: 'sass'
+    }))
+    .pipe(concat('style.css'))
+    .pipe(gulp.dest('./css/'));
 });
+gulp.task('default', ['build', 'serve', 'compass', 'watch']);
 
-gulp.task('default', ['build', 'serve', 'styles', 'watch']);
-
-
-// gulp.task('sass:watch', function () {
-//   gulp.watch('./sass/**/*.scss', ['sass']);
-// });
 
 //Watch task
 gulp.task('watch',function() {
-    gulp.watch('sass/**/*.scss',['styles']);
+    gulp.watch('sass/**/*.scss',['compass']);
 });

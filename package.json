@@ -22,6 +22,7 @@
     "watchify": "^2.4.0"
   },
   "devDependencies": {
+    "gulp-compass": "^2.1.0",
     "gulp-sass": "^2.1.1",
     "gulp-sass-bulk-import": "^0.3.2"
   }
