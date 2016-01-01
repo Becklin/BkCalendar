@@ -1,21 +1,17 @@
-//variables
-// $link-color-1: #000  ;
-// $link-color-2: blue  ;
-// //calculation
-// $font-size:16px  ;
-// .font-big  {
-//   font-size: $font-size * 1.2  ;
-// }
-// .font-middle  {
-//   font-size: $font-size - 3px  ;
-// }
-// .font-small  {
-//   font-size: $font-size / 3 ;
-// }
-// //mixin
-// @mixin bg($bgcolor:#000,$width:201px)  ; 
-//     background: $bgcolor  ;
-//     width: $width  ;
+
+
+$link-color-1: #000  ;
+$link-color-2: blue  ;
+//calculation
+$base-font-size: 16px;  
+$font-l: $base-font-size * 1.2  ;
+$font-m: $base-font-size  ;
+$font-s: $base-font-size * 0.8  ;
+
+@mixin bg($bgcolor:#000,$width:201px) { 
+    background: $bgcolor  ;
+    width: $width  ;
+}
 // .header  {
 //     +bg ;
 // }
