@@ -1,23 +1,25 @@
-
-
 $link-color-1: #000  ;
 $link-color-2: blue  ;
+
 //calculation
 $base-font-size: 16px;  
 $font-l: $base-font-size * 1.2  ;
 $font-m: $base-font-size  ;
 $font-s: $base-font-size * 0.8  ;
 
+@mixin bkbutton($fontcolor,$bgcolor){
+	width: 200px;
+	height: 60px;
+	font-size: $font-l;
+	color: $fontcolor;
+	border: none;
+	background-color: $bgcolor; 
+}
+
 @mixin bg($bgcolor:#000,$width:201px) { 
     background: $bgcolor  ;
     width: $width  ;
 }
-// .header  {
-//     +bg ;
-// }
-// .footer  {
-//     +bg(#ff0000,300px)  ;
-// }
 
 // //extend 
 // %all-h1  {
@@ -48,7 +50,8 @@ $font-s: $base-font-size * 0.8  ;
 //     border: 1px solid lighten(#000, 10); 
 //   }  
 // }  
-//font
+
+
 $font-family-title: 'Chivo', sans-serif, Helvetica, Arial;
 $font-family-subtitle: 'Oswald', sans-serif;
 $font-family-content: 'Roboto Condensed', sans-serif;

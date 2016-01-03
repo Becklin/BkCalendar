@@ -1,5 +1,5 @@
-@import '_reset';
-@import '_mixins';
+@import 'reset';
+@import 'mixins';
 
 //@import "sass/variables";
 
@@ -59,4 +59,20 @@
 }
 .marked {
     background: cyan;
+}
+
+.add {
+  @include bkbutton() ;
+}
+.delete {
+  @include bkbutton() ;
+}
+.detail {
+  @include bkbutton() ;
+}
+.next-month {
+  @include bkbutton() ;
+}
+.prev-month {
+  @include bkbutton() ;
 }
