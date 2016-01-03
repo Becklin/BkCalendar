@@ -14,15 +14,15 @@ var BkCalendarMixin = {
 };
 
 
-var Header = React.createClass({
-  render: function() {
-    return <nav className="nav">
-    <span>{this.props.curDate.getFullYear()}</span>
-    <span>{this.props.curDate.getMonth() + 1 }</span>
-    <span>{this.props.curDate.getDate()}</span>
-    </nav>
-  }
-});
+// var Header = React.createClass({
+//   render: function() {
+//     return <nav className="nav">
+//     <span>{this.props.curDate.getFullYear()}</span>
+//     <span>{this.props.curDate.getMonth() + 1 }</span>
+//     <span>{this.props.curDate.getDate()}</span>
+//     </nav>
+//   }
+// });
 var Bullitin = React.createClass({
   mixins: [ Reactfire, BkCalendarMixin ],
   getInitialState: function(){
@@ -98,9 +98,9 @@ var Bullitin = React.createClass({
 var BkDay = React.createClass({
 
   render: function() {
-
+ <span className="dateDisplay">{this.props.curMonth} / {this.props.curDate}</span>
     return <div onClick={this.handleRecord} className={"day " + (this.props.marked?"marked ":"") + (this.props.today?"today ":"") + (this.props.activeStatus?"active":"")} >
-      {this.props.title} <br/> {this.props.curMonth}月{this.props.curDate}日
+      <span className="dateDisplay">{this.props.curMonth} / {this.props.curDate}</span> <br/> {this.props.title}
     </div>
   }
 });
@@ -300,6 +300,11 @@ var BkMonth = React.createClass({
 
    return  <div>
    <nav>
+
+    <span>{this.props.bkcurDate.getFullYear()}</span>
+    <span>{this.props.bkcurDate.getMonth() + 1 }</span>
+    <span>{this.props.bkcurDate.getDate()}</span>
+
    {this.handleBkDayDisplay()}
    {this.handleDeleteDisplay()}
 
@@ -343,13 +348,13 @@ var BkMonth = React.createClass({
      return null;
    } else {
       if (!this.state.title) {
-         return <button 
+         return <button className="add" 
          onClick={this.handleBkDay}
          >
          ADD
        </button>
       } else {
-         return <button 
+         return <button className="detail" 
          onClick={this.handleBkDay}
          >
          DETAIL
@@ -368,7 +373,7 @@ var BkMonth = React.createClass({
       if (!this.state.title) {
          return;
       } else {
-         return <button 
+         return <button  className="delete" 
          onClick={this.handleDelete}
          >
          DELETE
@@ -397,12 +402,11 @@ var App = React.createClass({
   },
   render: function() {
     return <div className="app">
-             <Header curDate={this.state.curDate}  recordsStore={this.firebaseRefs.records} />
               <hr />
              <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth} todayStr={this.state.todayStr} />
-             <button onClick={this.prevMonth}>PREV MONTH</button>
-             <button onClick={this.nextMonth}>NEXT MONTH</button>
-             <button onClick={this.showToday}>TODAY</button>
+             <button  className="prev-month" onClick={this.prevMonth}>PREV MONTH</button>
+             <button  className="next-month" onClick={this.nextMonth}>NEXT MONTH</button>
+             <button  className="today" onClick={this.showToday}>TODAY</button>
 
           </div>
   },

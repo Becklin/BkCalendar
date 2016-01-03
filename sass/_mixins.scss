@@ -1,24 +1,41 @@
-$link-color-1: #000  ;
-$link-color-2: blue  ;
+// $link-color-1: #000  ;
+// $link-color-2: blue  ;
+$bgcolor: #b6e1f4;
+$font-color-normal: #212121;
+$font-color-hover: #212121;
+$font-color-active: #212121;
+$font-color-visited: #212121;
+
+$btn-bgcolor: #d9cbd9;
+$day: #fff;
+$marked: #bcaf08;
 
 //calculation
 $base-font-size: 16px;  
+$font-xl: $base-font-size * 1.6 ;
 $font-l: $base-font-size * 1.2  ;
 $font-m: $base-font-size  ;
 $font-s: $base-font-size * 0.8  ;
 
 @mixin bkbutton($fontcolor,$bgcolor){
 	width: 200px;
-	height: 60px;
-	font-size: $font-l;
+	height: 80px;
+	margin: 15px 5px 5px 0px;
+	font-size: $font-xl;
 	color: $fontcolor;
 	border: none;
 	background-color: $bgcolor; 
+-webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
 }
 
-@mixin bg($bgcolor:#000,$width:201px) { 
-    background: $bgcolor  ;
-    width: $width  ;
+@mixin gridstatus($bgcolor, $fontcolor){
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    background: $bgcolor;
+    color: $fontcolor
 }
 
 // //extend 
@@ -30,14 +47,6 @@ $font-s: $base-font-size * 0.8  ;
 // .header h1  {
 //     @extend %all-h1  ;
 //     color: #000  ;
-// }
-// .content h1  {
-//     @extend %all-h1  ; 
-//     color: green  ;
-// }
-// .footer  {
-//     @extend %all-h1 ;
-//     color: pink  ;
 // }
 // //content
 // @mixin bg($text-color,$bg-color){  
@@ -57,10 +66,7 @@ $font-family-subtitle: 'Oswald', sans-serif;
 $font-family-content: 'Roboto Condensed', sans-serif;
 
 //color
-body {
-	background: pink !important;
-	font-family: $font-family-content;
-}
+
 //rwd
 
 //components --> grids
