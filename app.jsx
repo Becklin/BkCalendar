@@ -46,8 +46,8 @@ var Bullitin = React.createClass({
   },
   render: function() {
   return <div className={"bullitin " + (this.state.bullitinStatus == true?"show":"hide")}>
-  <button onClick={this.props.handleClose}>CLOSE</button>
-  <button onClick={this.handleSubmit}>SUBMIT</button>
+  <button className="close" onClick={this.props.handleClose}>CLOSE</button>
+  <button className="submit" onClick={this.handleSubmit}>SUBMIT</button>
   <form>
   <h2>{this.props.clickedData}</h2>
     <fieldset>
@@ -300,11 +300,11 @@ var BkMonth = React.createClass({
 
    return  <div>
    <nav>
-
-    <span>{this.props.bkcurDate.getFullYear()}</span>
-    <span>{this.props.bkcurDate.getMonth() + 1 }</span>
+<div className="date-title">
+    <span>{this.props.bkcurDate.getFullYear()}</span> /
+    <span>{this.props.bkcurDate.getMonth() + 1 }</span> /
     <span>{this.props.bkcurDate.getDate()}</span>
-
+</div>
    {this.handleBkDayDisplay()}
    {this.handleDeleteDisplay()}
 
@@ -406,7 +406,7 @@ var App = React.createClass({
              <BkMonth bkcurDate={this.state.curDate} bkmonthDaysinMonth={this.state.monthDaysinMonth} todayStr={this.state.todayStr} />
              <button  className="prev-month" onClick={this.prevMonth}>PREV MONTH</button>
              <button  className="next-month" onClick={this.nextMonth}>NEXT MONTH</button>
-             <button  className="today" onClick={this.showToday}>TODAY</button>
+             <button  className="today" onClick={this.showToday}>THIS MONTH</button>
 
           </div>
   },

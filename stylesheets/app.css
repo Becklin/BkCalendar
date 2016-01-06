@@ -203,37 +203,58 @@ body {
   font-family: "Roboto Condensed", sans-serif;
 }
 
+.container {
+  width: 640px;
+  margin: 0 auto;
+}
+
 .app {
   position: relative;
+}
+
+nav {
+  height: 145px;
+}
+
+.date-title {
+  font-size: 28.8px;
+  background: #6d7371;
+  color: #fff;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
 }
 
 .grid-title {
   text-align: center;
   line-height: 70px;
-  font-size: 36px;
-  border: 3px solid red;
+  font-size: 28.8px;
+  border: 0px solid red;
   float: left;
-  border: 2px solid #fff;
+  border: 0px solid #fff;
   background: #EFEFEF;
-  width: 13%;
+  width: 91.42857px;
   height: 70px;
   font-family: "Chivo", sans-serif, Helvetica, Arial;
+  clear: right;
 }
 
 .grid {
   cursor: pointer;
   float: left;
-  border: 2px solid #fff;
+  border: 2px solid #EFEFEF;
   background: #EFEFEF;
-  width: 13%;
+  width: 91.42857px;
   height: 70px;
+  box-sizing: border-box;
 }
 
 .day {
+  padding: 5px;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 5px;
-  background: white;
+  background: transparent;
   color: #212121;
 }
 .day .dateDisplay {
@@ -241,23 +262,25 @@ body {
 }
 
 .active {
+  padding: 5px;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 5px;
   background: #fffcc3 !important;
   color: #212121 !important;
 }
 
 .marked {
+  padding: 5px;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 5px;
-  background: #bcaf08;
+  background: #f6ad2a;
   color: white;
 }
 
 .this-month {
-  background: #DADADA;
+  background: #fff;
 }
 
 .today {
@@ -289,9 +312,9 @@ body {
 }
 
 .add {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: white;
   border: none;
@@ -299,12 +322,13 @@ body {
   -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  float: right;
 }
 
 .delete {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: white;
   border: none;
@@ -312,12 +336,13 @@ body {
   -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  float: right;
 }
 
 .detail {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: white;
   border: none;
@@ -325,12 +350,13 @@ body {
   -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  float: right;
 }
 
 .next-month {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: white;
   border: none;
@@ -341,9 +367,9 @@ body {
 }
 
 .prev-month {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: white;
   border: none;
@@ -354,9 +380,35 @@ body {
 }
 
 .today {
-  width: 200px;
+  width: 205px;
   height: 80px;
-  margin: 15px 5px 5px 0px;
+  margin: 5px 5px 5px 0px;
+  font-size: 25.6px;
+  color: #212121;
+  border: none;
+  background-color: #fbd23a;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  width: 205px;
+  height: 80px;
+  margin: 5px 5px 5px 0px;
+  font-size: 25.6px;
+  color: white;
+  border: none;
+  background-color: #58b6c2;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.submit {
+  width: 205px;
+  height: 80px;
+  margin: 5px 5px 5px 0px;
   font-size: 25.6px;
   color: #212121;
   border: none;

@@ -5,28 +5,46 @@ body {
     background: $bgcolor !important;
     font-family: $font-family-content;
 }
+.container {
+    width: 640px;
+    margin: 0 auto;
+}
+
 .app {
     position: relative;
+}
+nav {
+    height: 145px;
+}
+.date-title {
+    font-size: $font-xxl;
+    background: #6d7371;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
 }
 .grid-title {
     text-align: center;
     line-height: 70px;
-    font-size: 36px;
-    border: 3px solid red;
+    font-size: $font-xxl;
+    border: 0px solid red;
     float: left;
-    border: 2px solid #fff;
+    border: 0px solid #fff;
     background: #EFEFEF;
-    width: 13%;
+    width: $container-width / 7;
     height: 70px;
     font-family: $font-family-title;
+    clear: right;
 }
 .grid {
     cursor: pointer;
     float: left;
-    border: 2px solid #fff;
+    border: 2px solid #EFEFEF;
     background: #EFEFEF;
-    width: 13%;
+    width: $container-width / 7;
     height: 70px;
+    box-sizing: border-box;
 }
 .day {
     @include gridstatus(
@@ -51,7 +69,7 @@ body {
 }
 
 .this-month {
-    background: #DADADA;
+    background: #fff;
 }
 .today {
     background: yellow;
@@ -80,12 +98,15 @@ body {
 
 .add {
   @include bkbutton(#fff, #58b6c2) ;
+  float: right;
 }
 .delete {
   @include bkbutton(#fff, #ef5030) ;
+  float: right;
 }
 .detail {
   @include bkbutton(#fff, #58b6c2) ;
+  float: right;
 }
 .next-month {
   @include bkbutton(#fff, #58b6c2) ;
@@ -94,5 +115,11 @@ body {
   @include bkbutton(#fff, #58b6c2) ;
 }
 .today {
+  @include bkbutton($font-color-normal, #fbd23a) ;
+}
+.close {
+  @include bkbutton(#fff, #58b6c2) ;
+}
+.submit {
   @include bkbutton($font-color-normal, #fbd23a) ;
 }

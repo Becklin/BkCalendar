@@ -7,20 +7,24 @@ $font-color-active: #212121;
 $font-color-visited: #212121;
 
 $btn-bgcolor: #d9cbd9;
-$day: #fff;
-$marked: #bcaf08;
+$day: transparent;
+// $marked: #bcaf08;
+$marked: #f6ad2a;
 
 //calculation
 $base-font-size: 16px;  
+$font-xxl: $base-font-size * 1.8 ;
 $font-xl: $base-font-size * 1.6 ;
 $font-l: $base-font-size * 1.2  ;
 $font-m: $base-font-size  ;
 $font-s: $base-font-size * 0.8  ;
 
+$container-width: 640px;
+
 @mixin bkbutton($fontcolor,$bgcolor){
-	width: 200px;
+	width: 205px;
 	height: 80px;
-	margin: 15px 5px 5px 0px;
+	margin: 5px 5px 5px 0px;
 	font-size: $font-xl;
 	color: $fontcolor;
 	border: none;
@@ -31,9 +35,11 @@ box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
 }
 
 @mixin gridstatus($bgcolor, $fontcolor){
+	padding: 5px;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding: 5px;
+    // padding: 5px;
     background: $bgcolor;
     color: $fontcolor
 }
