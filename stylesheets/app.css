@@ -107,7 +107,7 @@ figure {
 }
 
 fieldset {
-  border: 1px solid silver;
+  border: 0px solid silver;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em;
 }
@@ -217,7 +217,9 @@ nav {
 }
 
 .date-title {
+  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
   font-size: 28.8px;
+  letter-spacing: 1em;
   background: #6d7371;
   color: #fff;
   height: 50px;
@@ -229,13 +231,14 @@ nav {
   text-align: center;
   line-height: 70px;
   font-size: 28.8px;
+  color: #6d7371;
   border: 0px solid red;
   float: left;
   border: 0px solid #fff;
   background: #EFEFEF;
   width: 91.42857px;
   height: 70px;
-  font-family: "Chivo", sans-serif, Helvetica, Arial;
+  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
   clear: right;
 }
 
@@ -289,18 +292,46 @@ nav {
 
 .bullitin {
   position: absolute;
+  top: 60px;
   width: 100%;
   height: 100%;
-  border: 2px solid gray;
-  background: #fff;
+}
+.bullitin form {
+  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  background: #6d7371;
+  height: 600px;
+  clear: both;
+}
+.bullitin form h2 {
+  font-size: 28.8px;
+  width: 90%;
+  padding: 10px 0px;
+  margin: 0 auto;
+  color: #fff;
+  letter-spacing: 1em;
+}
+.bullitin form fieldset {
+  border: none;
+}
+.bullitin form fieldset h2 {
+  width: 90%;
+  padding: 0px;
+  letter-spacing: 0em;
 }
 .bullitin .record-title {
-  font-size: 48px;
+  font-size: 28.8px;
+  width: 90%;
+  margin: 5px auto;
+  padding: 5px 10px;
+  display: block;
 }
 .bullitin .record-content {
   width: 90%;
   height: 240px;
-  font-size: 24px;
+  font-size: 19.2px;
+  margin: 5px auto;
+  padding: 5px 10px;
+  display: block;
 }
 
 .show {
@@ -403,6 +434,7 @@ nav {
   -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  float: right;
 }
 
 .submit {
@@ -416,4 +448,35 @@ nav {
   -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+  float: right;
+}
+
+/* Small devices (tablets, 768px and up) */
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .container {
+    width: 840px;
+  }
+
+  .grid-title {
+    width: 120px;
+  }
+
+  .grid {
+    width: 120px;
+  }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    width: 1024px;
+  }
+
+  .grid-title {
+    width: 146.28571px;
+  }
+
+  .grid {
+    width: 146.28571px;
+  }
 }

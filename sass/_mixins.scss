@@ -1,3 +1,12 @@
+//media query
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+$container-sm-width: 640px;
+$container-md-width: 840px;
+$container-lg-width: 1024px;
+
+
 // $link-color-1: #000  ;
 // $link-color-2: blue  ;
 $bgcolor: #b6e1f4;
@@ -19,7 +28,7 @@ $font-l: $base-font-size * 1.2  ;
 $font-m: $base-font-size  ;
 $font-s: $base-font-size * 0.8  ;
 
-$container-width: 640px;
+
 
 @mixin bkbutton($fontcolor,$bgcolor){
 	width: 205px;

@@ -49,7 +49,7 @@ var Bullitin = React.createClass({
   <button className="close" onClick={this.props.handleClose}>CLOSE</button>
   <button className="submit" onClick={this.handleSubmit}>SUBMIT</button>
   <form>
-  <h2>{this.props.clickedData}</h2>
+  <h2>on {this.props.clickedData}</h2>
     <fieldset>
       <h2>TITLE</h2>
     <input className="record-title" type="text" value={this.state.title}  onChange={this.handleTitle} />
