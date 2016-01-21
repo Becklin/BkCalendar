@@ -204,7 +204,7 @@ body {
 }
 
 .container {
-  width: 640px;
+  width: 768px;
   margin: 0 auto;
 }
 
@@ -217,7 +217,7 @@ nav {
 }
 
 .date-title {
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
   font-size: 28.8px;
   letter-spacing: 1em;
   background: #6d7371;
@@ -236,9 +236,9 @@ nav {
   float: left;
   border: 0px solid #fff;
   background: #EFEFEF;
-  width: 91.42857px;
+  width: 76.8px;
   height: 70px;
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
   clear: right;
 }
 
@@ -247,7 +247,7 @@ nav {
   float: left;
   border: 2px solid #EFEFEF;
   background: #EFEFEF;
-  width: 91.42857px;
+  width: 14%;
   height: 70px;
   box-sizing: border-box;
 }
@@ -297,7 +297,7 @@ nav {
   height: 100%;
 }
 .bullitin form {
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
   background: #6d7371;
   height: 600px;
   clear: both;
@@ -308,7 +308,6 @@ nav {
   padding: 10px 0px;
   margin: 0 auto;
   color: #fff;
-  letter-spacing: 1em;
 }
 .bullitin form fieldset {
   border: none;
@@ -343,7 +342,7 @@ nav {
 }
 
 .add {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -357,7 +356,7 @@ nav {
 }
 
 .delete {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -371,7 +370,7 @@ nav {
 }
 
 .detail {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -385,7 +384,7 @@ nav {
 }
 
 .next-month {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -398,7 +397,7 @@ nav {
 }
 
 .prev-month {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -411,7 +410,7 @@ nav {
 }
 
 .today {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -424,7 +423,7 @@ nav {
 }
 
 .close {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -438,7 +437,7 @@ nav {
 }
 
 .submit {
-  width: 205px;
+  width: 31%;
   height: 80px;
   margin: 5px 5px 5px 0px;
   font-size: 25.6px;
@@ -451,32 +450,46 @@ nav {
   float: right;
 }
 
-/* Small devices (tablets, 768px and up) */
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
+@media screen and (min-width: 768px) and (max-width: 979px) {
+  body {
+    background: red !important;
+  }
+
   .container {
-    width: 840px;
+    width: 1280px;
   }
 
   .grid-title {
-    width: 120px;
+    width: 182.85714px;
   }
 
   .grid {
-    width: 120px;
+    width: 182.85714px;
   }
 }
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
+  body {
+    background: blue !important;
+  }
+
   .container {
-    width: 1024px;
+    width: 1400px;
   }
 
   .grid-title {
-    width: 146.28571px;
+    width: 200px;
   }
 
   .grid {
-    width: 146.28571px;
+    width: 200px;
+  }
+}
+@media screen and (max-device-width: 950px) {
+  body {
+    background: green !important;
+  }
+
+  .container {
+    width: 100%;
   }
 }

@@ -42,7 +42,6 @@ var Bullitin = React.createClass({
         title: nextProps.title,
         content: nextProps.content
       })
-
   },
   render: function() {
   return <div className={"bullitin " + (this.state.bullitinStatus == true?"show":"hide")}>
@@ -56,7 +55,7 @@ var Bullitin = React.createClass({
     </fieldset>
     <fieldset>
       <h2>DESCRIPTION</h2>
-      <textarea className="record-content" name="description" value={this.state.content}  onChange={this.handleContent} >
+      <textarea className="record-content" name="description" value={(this.state.content)?this.state.content:""}  onChange={this.handleContent} >
       </textarea>
     </fieldset>
   </form>
@@ -158,9 +157,7 @@ var GridGroup = React.createClass({ //操作格子的變色
                recordContent = this.props.records[key].content;
           };
         }
-      // if (this.props.value === index) {
-      //   alert("bingo");
-      // };
+
         this.props.onChange(index, clickedData, recordTitle, recordContent); 
       }.bind(this)
     });
@@ -338,9 +335,16 @@ var BkMonth = React.createClass({
       content: content
     });
   },
-  handleBkDay: function(){
+  addBkDay: function(){
     this.setState({
-      bullitinStatus: true
+      bullitinStatus: true,
+      oriContent: false
+    });
+  },
+  detailBkDay: function(){
+    this.setState({
+      bullitinStatus: true,
+      oriContent: true
     });
   },
   handleBkDayDisplay: function(){
@@ -349,13 +353,13 @@ var BkMonth = React.createClass({
    } else {
       if (!this.state.title) {
          return <button className="add" 
-         onClick={this.handleBkDay}
+         onClick={this.addBkDay}
          >
          ADD
        </button>
       } else {
          return <button className="detail" 
-         onClick={this.handleBkDay}
+         onClick={this.detailBkDay}
          >
          DETAIL
          </button>
