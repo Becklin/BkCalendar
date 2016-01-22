@@ -198,13 +198,21 @@ a {
   color: black;
 }
 
+.show {
+  display: show;
+}
+
+.hide {
+  display: none;
+}
+
 body {
   background: #b6e1f4 !important;
   font-family: "Roboto Condensed", sans-serif;
 }
 
 .container {
-  width: 640px;
+  width: 320px;
   margin: 0 auto;
 }
 
@@ -213,12 +221,12 @@ body {
 }
 
 nav {
-  height: 145px;
+  height: 115px;
 }
 
 .date-title {
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
-  font-size: 28.8px;
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
+  font-size: 19.2px;
   letter-spacing: 1em;
   background: #6d7371;
   color: #fff;
@@ -230,15 +238,15 @@ nav {
 .grid-title {
   text-align: center;
   line-height: 70px;
-  font-size: 28.8px;
+  font-size: 19.2px;
   color: #6d7371;
   border: 0px solid red;
   float: left;
   border: 0px solid #fff;
   background: #EFEFEF;
-  width: 91.42857px;
+  width: 45.71429px;
   height: 70px;
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
   clear: right;
 }
 
@@ -247,25 +255,30 @@ nav {
   float: left;
   border: 2px solid #EFEFEF;
   background: #EFEFEF;
-  width: 91.42857px;
+  width: 45.71429px;
   height: 70px;
   box-sizing: border-box;
 }
 
 .day {
-  padding: 5px;
+  padding: 4px;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   background: transparent;
   color: #212121;
 }
+.day span {
+  font-size: 1.6px;
+  overflow: hidden;
+  text-overflow: clip;
+}
 .day .dateDisplay {
-  font-size: 19.2px;
+  font-size: 1.6px;
 }
 
 .active {
-  padding: 5px;
+  padding: 4px;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -274,7 +287,7 @@ nav {
 }
 
 .marked {
-  padding: 5px;
+  padding: 4px;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -297,7 +310,7 @@ nav {
   height: 100%;
 }
 .bullitin form {
-  font-family: "Oswald", sans-serif, "Microsoft JhengHei";
+  font-family: "Microsoft JhengHei", "Oswald", sans-serif;
   background: #6d7371;
   height: 600px;
   clear: both;
@@ -308,7 +321,6 @@ nav {
   padding: 10px 0px;
   margin: 0 auto;
   color: #fff;
-  letter-spacing: 1em;
 }
 .bullitin form fieldset {
   border: none;
@@ -334,19 +346,11 @@ nav {
   display: block;
 }
 
-.show {
-  display: show;
-}
-
-.hide {
-  display: none;
-}
-
 .add {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #58b6c2;
@@ -357,10 +361,10 @@ nav {
 }
 
 .delete {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #ef5030;
@@ -371,10 +375,10 @@ nav {
 }
 
 .detail {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #58b6c2;
@@ -385,10 +389,10 @@ nav {
 }
 
 .next-month {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #58b6c2;
@@ -398,10 +402,10 @@ nav {
 }
 
 .prev-month {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #58b6c2;
@@ -411,10 +415,10 @@ nav {
 }
 
 .today {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: #212121;
   border: none;
   background-color: #fbd23a;
@@ -424,10 +428,10 @@ nav {
 }
 
 .close {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: white;
   border: none;
   background-color: #58b6c2;
@@ -438,10 +442,10 @@ nav {
 }
 
 .submit {
-  width: 205px;
-  height: 80px;
+  width: 31%;
+  height: 50px;
   margin: 5px 5px 5px 0px;
-  font-size: 25.6px;
+  font-size: 19.2px;
   color: #212121;
   border: none;
   background-color: #fbd23a;
@@ -451,32 +455,21 @@ nav {
   float: right;
 }
 
-/* Small devices (tablets, 768px and up) */
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-  .container {
-    width: 840px;
-  }
-
-  .grid-title {
-    width: 120px;
-  }
-
-  .grid {
-    width: 120px;
-  }
+@media (min-width: 320px) {
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 }
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-  .container {
-    width: 1024px;
-  }
-
-  .grid-title {
-    width: 146.28571px;
-  }
-
-  .grid {
-    width: 146.28571px;
-  }
+@media (min-width: 480px) {
+  /* smartphones, Android phones, landscape iPhone */
+}
+@media (min-width: 600px) {
+  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+}
+@media (min-width: 801px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+}
+@media (min-width: 1025px) {
+  /* big landscape tablets, laptops, and desktops */
+}
+@media (min-width: 1281px) {
+  /* hi-res laptops and desktops */
 }

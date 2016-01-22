@@ -1,6 +1,11 @@
 @import 'reset';
 @import 'mixins';
-
+.show {
+    display: show;
+}
+.hide {
+    display: none;
+}
 body {
     background: $bgcolor !important;
     font-family: $font-family-content;
@@ -14,11 +19,11 @@ body {
     position: relative;
 }
 nav {
-    height: 145px;
+    height: 115px;
 }
 .date-title {
-    font-family: $font-family-subtitle, "Microsoft JhengHei";
-    font-size: $font-xxl;
+    font-family: "Microsoft JhengHei", $font-family-subtitle ;
+    font-size: $font-l;
     letter-spacing: 1em;
     background: #6d7371;
     color: #fff;
@@ -29,7 +34,7 @@ nav {
 .grid-title {
     text-align: center;
     line-height: 70px;
-    font-size: $font-xxl;
+    font-size: $font-l;
     color: #6d7371;
     border: 0px solid red;
     float: left;
@@ -37,7 +42,7 @@ nav {
     background: #EFEFEF;
     width: $container-sm-width / 7;
     height: 70px;
-        font-family: $font-family-subtitle, "Microsoft JhengHei";
+   font-family: "Microsoft JhengHei", $font-family-subtitle ;
     clear: right;
 }
 .grid {
@@ -54,8 +59,13 @@ nav {
               $day,
               #212121
         );
+    span {
+        font-size: $font-xxs;
+        overflow: hidden;
+        text-overflow: clip; 
+    }
     .dateDisplay {
-        font-size: $font-l;
+        font-size: $font-xxs;
     }
 }
 .active {
@@ -83,7 +93,7 @@ nav {
     width: 100%;
     height: 100%;
     form {
-        font-family: $font-family-subtitle, "Microsoft JhengHei";
+        font-family:  "Microsoft JhengHei", $font-family-subtitle ;
         background: #6d7371;
         height: 600px;
         clear: both;
@@ -93,7 +103,7 @@ nav {
                 padding: 10px 0px; 
                 margin: 0 auto;
                 color: #fff;
-    letter-spacing: 1em;
+        // letter-spacing: 1em;
 
         }
         fieldset {
@@ -122,12 +132,7 @@ nav {
         display: block;
     }
 }
-.show {
-    display: show;
-}
-.hide {
-    display: none;
-}
+
 
 .add {
   @include bkbutton(#fff, #58b6c2) ;
@@ -158,34 +163,53 @@ nav {
   @include bkbutton($font-color-normal, #fbd23a) ;
     float: right;
 }
+//@media screen and (min-width: 768px) and (max-width: 979px) {   
+//        body {
+//            background: red !important;
+//        }
+//    .container {
+//        width: $container-md-width;
+//    }
+//    .grid-title {
+//        width: $container-md-width / 7;
+//    }
+//    .grid {
+//        width: $container-md-width / 7;
+//    }
+//}
+//@media screen and (min-width: 1200px) {
+//        body {
+//            background: blue !important;
+//        }
+//    .container {
+//        width: $container-lg-width;
+//    }
+//    .grid-title {
+//        width: $container-lg-width / 7;
+//    }
+//    .grid {
+//        width: $container-lg-width / 7;
+//    }
+//}
+@media (min-width:320px) { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ 
+    
+}
+@media (min-width:480px) { /* smartphones, Android phones, landscape iPhone */ 
+    
+}
+@media (min-width:600px) { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ 
+    
+}
+@media (min-width:801px) { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
+    
+}
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ 
+    
+}
+@media (min-width:1281px) { /* hi-res laptops and desktops */ 
+    
+}
+@media (max-width: 480px) { 
+    
+}
 
-/* Small devices (tablets, 768px and up) */
-// @media (min-width: @screen-sm-min) { 
-
-//  }
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: $screen-md-min) {
-    .container {
-        width: $container-md-width;
-    }
-    .grid-title {
-        width: $container-md-width / 7;
-    }
-    .grid {
-        width: $container-md-width / 7;
-    }
- }
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: $screen-lg-min) { 
-    .container {
-        width: $container-lg-width;
-    }
-    .grid-title {
-        width: $container-lg-width / 7;
-    }
-    .grid {
-        width: $container-lg-width / 7;
-    }
- }

@@ -1,10 +1,10 @@
 //media query
-$screen-sm-min: 768px;
-$screen-md-min: 992px;
-$screen-lg-min: 1200px;
-$container-sm-width: 640px;
-$container-md-width: 840px;
-$container-lg-width: 1024px;
+//$galaxy-sm-min: 980px;
+//$screen-md-min: 992px;
+//$screen-lg-min: 1200px;
+$container-sm-width: 320px;
+$container-md-width: 1280px;
+$container-lg-width: 1400px;
 
 
 // $link-color-1: #000  ;
@@ -27,14 +27,14 @@ $font-xl: $base-font-size * 1.6 ;
 $font-l: $base-font-size * 1.2  ;
 $font-m: $base-font-size  ;
 $font-s: $base-font-size * 0.8  ;
-
-
+$font-xs: $base-font-size * 0.6  ;
+$font-xxs: $base-font-size * 0.1  ;
 
 @mixin bkbutton($fontcolor,$bgcolor){
-	width: 205px;
-	height: 80px;
+	width: 31%;
+	height: 50px;
 	margin: 5px 5px 5px 0px;
-	font-size: $font-xl;
+	font-size: $font-l;
 	color: $fontcolor;
 	border: none;
 	background-color: $bgcolor; 
@@ -44,11 +44,10 @@ box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
 }
 
 @mixin gridstatus($bgcolor, $fontcolor){
-	padding: 5px;
+	padding: 4px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    // padding: 5px;
     background: $bgcolor;
     color: $fontcolor
 }
