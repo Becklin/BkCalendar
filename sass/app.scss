@@ -1,0 +1,236 @@
+@import 'reset';
+@import 'mixins';
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}
+body {
+    background: $bgcolor !important;
+    font-family: $font-family-content;
+}
+.container {
+    width: $container-sm-width;
+    margin: 0 auto;
+}
+
+.app {
+    position: relative;
+}
+.app-content-wrapper {
+   // padding: 0 10px;
+}
+nav {
+    position: fixed;
+    height: 113px;
+    width: 320px;
+    background: #EFEFEF;
+    .logo {
+        margin-left: 10px;
+    }
+}
+.date-title {
+    font-family: "Microsoft JhengHei", $font-family-subtitle ;
+    font-size: $font-l;
+    font-weight: 800;
+    letter-spacing: 14px;
+    background: #6d7371;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.grid-title {
+    text-align: center;
+    line-height: 60px;
+    margin-top: 113px;
+    font-size: $font-m;
+    color: #6d7371;
+    border: 0px solid red;
+    float: left;
+    border: 0px solid #fff;
+    background: #EFEFEF;
+    width: ($container-sm-width) / 7;
+    height: 60px;
+    font-family: "Microsoft JhengHei", $font-family-subtitle ;
+    clear: right;
+}
+.grid {
+    cursor: pointer;
+    float: left;
+    border: 2px solid #EFEFEF;
+    background: #EFEFEF;
+    width: ($container-sm-width) / 7;
+    height: 70px;
+    box-sizing: border-box;
+}
+.day {
+    @include gridstatus(
+              $day,
+              #212121
+        );
+    span {
+        font-size: $font-xs;
+        line-height: 15px;
+        overflow: hidden;
+        text-overflow: clip; 
+    }
+    .dateDisplay {
+        font-size: $font-xxs;
+    }
+}
+.active {
+    @include gridstatus(
+              #fffcc3 !important,
+              #212121 !important
+        );
+}
+.marked {
+    @include gridstatus(
+              $marked,
+              #fff
+        )
+}
+
+.this-month {
+    background: #fff;
+}
+.bullitin {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    form {
+        font-family:  "Microsoft JhengHei", $font-family-subtitle ;
+        background: #6d7371;
+        height: 660px;
+        clear: both;
+        h2 {
+            //font-size: $font-xxl;
+                width: 90%;
+                padding: 10px 0px; 
+                margin: 0 auto;
+                color: #fff;
+        }
+        fieldset {
+            border: none;
+                    h2 {
+                            width: 90%;
+                            padding: 0px; 
+                           letter-spacing: 0em;
+                    }
+
+        }
+        .first-h2 {
+            font-size: $font-xxl;
+            margin: 15px;
+        }
+        .btn-wrapper {
+            text-align: right;
+            padding-right: 23px;
+        }
+
+    }
+    .record-title {
+        font-size: $font-xxl;
+        width: 90%;
+        margin: 5px auto;
+        padding: 5px 10px;
+        display: block;
+    }
+    .record-content {
+        width: 90%;
+        height: 240px;
+        font-size: $font-l;
+        margin: 5px auto;
+        padding: 5px 10px;
+        display: block;
+    }
+}
+
+
+.add {
+  @include bkbutton(#fff, #58b6c2) ;
+  float: right;
+}
+.delete {
+  @include bkbutton(#fff, #ef5030) ;
+  float: right;
+  width: 27%;
+}
+.detail {
+  @include bkbutton(#fff, #58b6c2) ;
+  float: right;
+  width: 27%;
+}
+.next-month {
+  @include bkbutton(#fff, #58b6c2) ;
+  float: left;
+}
+.prev-month {
+  @include bkbutton(#fff, #58b6c2) ;
+  float: left;
+}
+.today {
+  @include bkbutton($font-color-normal, #fbd23a) ;
+  float: right;
+  width: 33%;
+}
+.close {
+  @include bkbutton(#fff, #58b6c2) ;
+    text-align: center;
+}
+.submit {
+  @include bkbutton($font-color-normal, #fbd23a) ;
+}
+//@media screen and (min-width: 768px) and (max-width: 979px) {   
+//        body {
+//            background: red !important;
+//        }
+//    .container {
+//        width: $container-md-width;
+//    }
+//    .grid-title {
+//        width: $container-md-width / 7;
+//    }
+//    .grid {
+//        width: $container-md-width / 7;
+//    }
+//}
+//@media screen and (min-width: 1200px) {
+//        body {
+//            background: blue !important;
+//        }
+//    .container {
+//        width: $container-lg-width;
+//    }
+//    .grid-title {
+//        width: $container-lg-width / 7;
+//    }
+//    .grid {
+//        width: $container-lg-width / 7;
+//    }
+//}
+@media (min-width:320px) { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ 
+    
+}
+@media (min-width:480px) { /* smartphones, Android phones, landscape iPhone */ 
+    
+}
+@media (min-width:600px) { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ 
+    
+}
+@media (min-width:801px) { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
+    
+}
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ 
+    
+}
+@media (min-width:1281px) { /* hi-res laptops and desktops */ 
+    
+}
+@media (max-width: 480px) { 
+    
+}
+

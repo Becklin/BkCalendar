@@ -1,0 +1,88 @@
+//media query
+//$galaxy-sm-min: 980px;
+//$screen-md-min: 992px;
+//$screen-lg-min: 1200px;
+$container-sm-width: 320px;
+$container-md-width: 1280px;
+$container-lg-width: 1400px;
+
+
+// $link-color-1: #000  ;
+// $link-color-2: blue  ;
+$bgcolor: #e6ffff;
+$font-color-normal: #212121;
+$font-color-hover: #212121;
+$font-color-active: #212121;
+$font-color-visited: #212121;
+
+$btn-bgcolor: #d9cbd9;
+$day: transparent;
+// $marked: #bcaf08;
+$marked: #f6ad2a;
+
+//calculation
+$base-font-size: 16px;  
+$font-xxl: $base-font-size * 1.8 ;
+$font-xl: $base-font-size * 1.6 ;
+$font-l: $base-font-size * 1.2  ;
+$font-m: $base-font-size  ;
+$font-s: $base-font-size * 0.8  ;
+$font-xs: $base-font-size * 0.6  ;
+$font-xxs: $base-font-size * 0.1  ;
+
+@mixin bkbutton($fontcolor,$bgcolor){
+	width: 31%;
+	height: 50px;
+	margin: 5px 5px 5px 0px;
+	font-size: $font-l;
+	color: $fontcolor;
+	border: none;
+	background-color: $bgcolor; 
+-webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.5);
+}
+
+@mixin gridstatus($bgcolor, $fontcolor){
+	padding: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background: $bgcolor;
+    color: $fontcolor
+}
+
+// //extend 
+// %all-h1  {
+//     font-size: 20px  ;
+//     line-height: 1.8  ;
+//     letter-spacing: 1px ; 
+// }
+// .header h1  {
+//     @extend %all-h1  ;
+//     color: #000  ;
+// }
+// //content
+// @mixin bg($text-color,$bg-color){  
+//   background: $bg-color;  
+//   color: $text-color;  
+//   @content;
+// }  
+// .box{  
+//   @include bg(#fff,#000){  
+//     border: 1px solid lighten(#000, 10); 
+//   }  
+// }  
+
+
+$font-family-title: 'Chivo', sans-serif, Helvetica, Arial;
+$font-family-subtitle: 'Oswald', sans-serif;
+$font-family-content: 'Roboto Condensed', sans-serif;
+
+//color
+
+//rwd
+
+//components --> grids
+
+//components --> buttons
